@@ -6,8 +6,8 @@ export default class {
 		this._scope = scope;
 		this._evalInScope = (script => eval(script)).bind(scope);
 	}
-	log() {
-		console.log.apply(console, arguments);
+	log(...args) {
+		console.log(...args);
 	}
 	parseSource(__source) {
 		// remove unneeded \r characters
