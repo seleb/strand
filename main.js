@@ -50,12 +50,6 @@ export default class {
 		regexSource = /(\s)?\[{2}(.*?)\]{2}/g;
 		return __source.split(regexSource);
 	}
-	parseExtraData(__source) {
-		// break out links (links are inside double square brackets, i.e. [[link]] )
-		// result will be an array in format [plain-text,whitespace,link, plain-text,whitespace,link, ...]
-		regexSource = /(\s)?\\{{2}(.*?)\\}{2}/g;
-		return __source.split(regexSource);
-	}
 	parsePassage(__source) {
 		this.log("source: ", __source);
 		if (!__source) {
