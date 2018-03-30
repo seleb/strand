@@ -1,6 +1,10 @@
 export default class {
-	constructor() {
-		this.scope = this;
+	/**
+	 * @param {Object} scope References to `this` within a script will refer to scope
+	 */
+	constructor(scope = {}) {
+		this._scope = scope;
+		this._evalInScope = (script => eval(script)).bind(scope);
 	}
 	log() {
 		console.log.apply(console, arguments);
@@ -100,13 +104,7 @@ export default class {
 		this.log("Parsed passage: ", words);
 		return words;
 	}
-	__eval(__s) {
-		return eval(__s);
-	}
-	eval(__script, __scope) {
-		// return this.startAction()
-		// .then(this.__eval.bind(__scope, __script))
-		// .then(this.endAction.bind(this));
-		return this.__eval.call(__scope, __script);
+	eval(script) {
+		return this._evalInScope(script);
 	}
 }
