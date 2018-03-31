@@ -75,6 +75,23 @@ export default class {
 	}
 	back() {
 	}
+
+	/**
+	 * Pushes the current passage (if there is one) to history,
+	 * then tells the renderer to display the passed-in passage
+	 *
+	 * @param {Object} passage Passage to display
+	 * @returns {Promise} resolves when renderer has displayed passage
+	 */
 	displayPassage(passage) {
+		console.log("Displaying passage:", passage);
+		// push current state to history
+		if (this.currentPassage) {
+			this.history.push(this.currentPassage.title);
+		} else {
+			console.warn("No history pushed because there is no current passage");
+		}
+		this.currentPassage = passage;
+		return Promise.resolve(); // TODO: ask renderer to display it
 	}
 }
