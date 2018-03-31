@@ -44,12 +44,13 @@ describe("Runner", () => {
 					})
 			).toThrow();
 			expect(
-				new Runner({
-					renderer: {
-						displayPassage: () => {}
-					}
-				})
-			).toBeDefined();
+				() =>
+					new Runner({
+						renderer: {
+							displayPassage: () => {}
+						}
+					})
+			).not.toThrow();
 		});
 	});
 
