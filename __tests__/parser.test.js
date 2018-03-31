@@ -1,4 +1,4 @@
-import { parsePassages } from "../parser";
+import { parsePassages, parsePassage } from "../parser";
 
 describe("parsePassages", () => {
 	it("is a function", () => {
@@ -102,5 +102,53 @@ describe("parsePassages", () => {
 			expect(() => parsePassages("::title\n")).toThrow();
 			expect(() => parsePassages("::a\n::b\nbody")).toThrow();
 		});
+	});
+});
+
+describe("parsePassage", () => {
+	it("is a function", () => {
+		expect(typeof parsePassage).toBe("function");
+	});
+	it("accepts an object with `title` and `body` as an argument", () => {
+		expect(() => parsePassage()).toThrow();
+		expect(() => parsePassage("string")).toThrow();
+		expect(() => parsePassage({})).toThrow();
+		expect(() =>
+			parsePassage({
+				title: "title",
+				body: ""
+			})
+		).toThrow();
+		expect(() =>
+			parsePassage({
+				title: "",
+				body: "body"
+			})
+		).toThrow();
+		expect(
+			parsePassage({
+				title: "title",
+				body: "body"
+			})
+		).toBeDefined();
+	});
+
+	// TODO
+	it("returns", () => {
+		expect(
+			parsePassage({
+				title: "title",
+				body: "body"
+			})
+		).toBeDefined();
+	});
+	it("returned object preserves any extra non-spec properties", () => {
+		expect(
+			parsePassage({
+				title: "title",
+				body: "body",
+				extra: "property"
+			}).extra
+		).toBe("property");
 	});
 });

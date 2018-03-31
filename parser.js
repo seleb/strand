@@ -44,3 +44,20 @@ export function parsePassages(source) {
 	}
 	return passages;
 }
+
+export function parsePassage(passage) {
+	if (!passage) {
+		throw new Error("No passage provided");
+	}
+	const { title, body } = passage;
+	if (!title) {
+		throw new Error("Passage must have a title");
+	}
+	if (!body) {
+		throw new Error("Passage must have a body");
+	}
+	return {
+		...passage,
+		passage: null // TODO
+	};
+}
