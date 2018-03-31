@@ -71,9 +71,41 @@ export default class {
 			return parsePassage(this.passages[defaultTitle]);
 		}
 	}
+
+	/**
+	 * Retrieves the passage with provided title, then displays it.
+	 *
+	 * @param {string} title Title of passage to go to
+	 * @returns {Promise} resolves when transition in to new passage has completed.
+	 */
 	goto(title) {
+		console.log("Going to passage:", title);
+		return Promise.resolve()
+			.then(() => this.getPassageWithTitle(title))
+			.then(passage => this.displayPassage(passage));
 	}
+	/**
+	 * Goes to the last passage.
+	 *
+	 * @returns {Promise} resolves with title of new currentPassage when goto is complete. If no history is available, rejects with an error
+	 */
 	back() {
+		console.log("back");
+		if (this.history.length === 0) {
+			return Promise.reject(
+				new Error(
+					"Cannot go back because there is no history available."
+				)
+			);
+		}
+		// go to the last entry in history,
+		// then remove the last entry in history
+		// (i.e. don't get stuck in a loop)
+		const lastPassageTitle = this.history.pop();
+		return this.goto(lastPassageTitle).then(() => {
+			this.history.pop();
+			return lastPassageTitle;
+		});
 	}
 
 	/**
