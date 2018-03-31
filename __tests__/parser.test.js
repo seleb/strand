@@ -45,9 +45,10 @@ describe("parsePassages", () => {
 		expect(() => parsePassages("body without title")).toThrow();
 	});
 	it("fails if passages have non-unique titles", () => {
-		expect(() => parsePassages("::title\nbody1\n::title\nbody2")).toThrow();
+		expect(() =>
+			parsePassages("::duplicate title\nbody1\n::duplicate title\nbody2")
+		).toThrow();
 	});
-
 	describe("passage titles", () => {
 		it("are strings", () => {
 			expect(Object.keys(parsePassages("::title\nbody"))[0]).toBe(
