@@ -240,5 +240,9 @@ describe("Runner", () => {
 			// TODO
 			throw new Error();
 		});
+		it("resolves when renderer has displayed passage", () => {
+			// TODO
+			throw new Error();
+		});
 	});
 });
