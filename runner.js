@@ -10,5 +10,18 @@ export default class {
 		this.history = [];
 		this.currentPassage = null;
 		this._evalInScope = ((script)=>eval(script)).bind(this);
+	eval(script=""){
+	}
+	setSource(source) {
+	}
+	goto(title) {
+	}
+	back() {
+	}
+	transitionIn(passage) {
+	}
+	transitionOut(passage) {
+	}
+	displayPassage(passage) {
 	}
 }
