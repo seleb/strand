@@ -56,7 +56,7 @@ describe("parsePassages", () => {
 				)
 			).toEqual(["a", "b", "c", "d"]);
 		});
-		it("are not be empty", () => {
+		it("are not empty", () => {
 			expect(Object.keys(parsePassages("::a\n1\n::\n2"))).toEqual(["a"]);
 		});
 	});
@@ -70,7 +70,7 @@ describe("parsePassages", () => {
 		it("have leading/trailing whitespace trimmed", () => {
 			expect(parsePassages("::title\n body \n")["title"]).toBe("body");
 		});
-		it("are not be empty", () => {
+		it("are not empty", () => {
 			expect(() => parsePassages("::title\n")).toThrow();
 			expect(() => parsePassages("::a\n::b\nbody")).toThrow();
 		});
