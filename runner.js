@@ -9,14 +9,21 @@ export const defaultPassage = {
 
 export default class {
 	/**
-	 *
-	 * @param {string?} source `this.setSource` is called with `source` as a parameter
+	 * @param {Object} args
+	 * @param {Object} args.renderer Renderer to be controlled by this Runner. The only requirement for a renderer is that it defines `displayPassage`, which accepts a parsed passage and returns a Promise
+	 * @param {string?} args.source `this.setSource` is called with `source` as a parameter
 	 */
-	constructor(source) {
+	constructor({ renderer, source }) {
+		if (typeof renderer.displayPassage !== "function") {
+			throw new Error(
+				"renderer must have a `displayPassage` function which accepts a parsed passage and returns a Promise"
+			);
+		}
 		this.history = [];
 		this.currentPassage = null;
 		this._evalInScope = (script => eval(script)).bind(this);
 
+		this.renderer = renderer;
 		this.setSource(source);
 	}
 	/**
