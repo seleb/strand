@@ -56,9 +56,7 @@ describe("Runner", () => {
 		});
 		it("returns a promise", () => {
 			const r = new Runner();
-			const p = r.goto("test");
-			expect(typeof p.then).toBe("function");
-			expect(typeof p.catch).toBe("function");
+			expect(r.goto() instanceof Promise).toBe(true);
 		});
 		it("resolves with no value", () => {
 			expect.assertions(1);
