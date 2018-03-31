@@ -22,6 +22,7 @@ export default class {
 		this.history = [];
 		this.currentPassage = null;
 		this._evalInScope = (script => eval(script)).bind(this);
+		this.busy = false;
 
 		this.renderer = renderer;
 		this.setSource(source);
@@ -119,18 +120,31 @@ export default class {
 	 * Pushes the current passage (if there is one) to history,
 	 * then tells the renderer to display the passed-in passage
 	 *
+	 * Runner will be flagged as `busy` until renderer has finished.
+	 * Calling `displayPassage` while busy will throw an error.
+	 *
 	 * @param {Object} passage Passage to display
 	 * @returns {Promise} resolves when renderer has displayed passage
 	 */
 	displayPassage(passage) {
+		if (this.busy) {
+			throw new Error(
+				"Busy waiting for previous passage to display; cannot display another"
+			);
+		}
 		console.log("Displaying passage:", passage);
 		// push current state to history
 		if (this.currentPassage) {
 			this.history.push(this.currentPassage.title);
 		} else {
-			console.warn("No history pushed because there is no current passage");
+			console.warn(
+				"No history pushed because there is no current passage"
+			);
 		}
 		this.currentPassage = passage;
-		return this.renderer.displayPassage(passage);
+		this.busy = true;
+		return this.renderer.displayPassage(passage).then(() => {
+			this.busy = false;
+		});
 	}
 }
