@@ -293,11 +293,9 @@ describe("Runner", () => {
 				}
 			});
 			const p = r.getPassageWithTitle();
-			r
-				.displayPassage(p)
-				.then(() =>
-					expect(mockDisplayPassage.mock.calls.length).toBe(1)
-				);
+			return r.displayPassage(p).then(() => {
+				expect(mockDisplayPassage.mock.calls.length).toBe(1);
+			});
 		});
 	});
 });
