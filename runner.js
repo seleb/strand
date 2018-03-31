@@ -131,6 +131,6 @@ export default class {
 			console.warn("No history pushed because there is no current passage");
 		}
 		this.currentPassage = passage;
-		return Promise.resolve(); // TODO: ask renderer to display it
+		return this.renderer.displayPassage(passage);
 	}
 }
