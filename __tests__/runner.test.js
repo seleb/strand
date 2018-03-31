@@ -203,7 +203,6 @@ describe("Runner", () => {
 	});
 
 	describe("displayPassage", () => {
-		// TODO
 		it("is a function", () => {
 			const r = new Runner();
 			expect(typeof r.displayPassage).toBe("function");
