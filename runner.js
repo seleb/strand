@@ -1,4 +1,4 @@
-import { parsePassages } from "./parser";
+import { parsePassages, parsePassage } from "./parser";
 
 const defaultTitle = "DEFAULT";
 export const defaultPassage = {
@@ -49,7 +49,27 @@ export default class {
 		this.passages[defaultTitle] =
 			this.passages[defaultTitle] || defaultPassage;
 	}
+
+	/**
+	 * Parses and returns the passage with the provided title
+	 * If the passage can't be found/parsed, tries to use default instead.
+	 *
+	 * @param {string} title Title of passage to retrieve
+	 * @returns {Object} parsed passage
+	 */
 	getPassageWithTitle(title) {
+		try {
+			if (!this.passages[title]) {
+				throw new Error(`Passage titled "${title}" not found"`);
+			}
+			return parsePassage(this.passages[title]);
+		} catch (err) {
+			console.error(
+				`Failed to parse passage titled "${title}", going to "${defaultTitle}" instead. Original error:`,
+				err
+			);
+			return parsePassage(this.passages[defaultTitle]);
+		}
 	}
 	goto(title) {
 	}
