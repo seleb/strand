@@ -1,22 +1,37 @@
 import { parsePassages } from "../parser";
 
 describe("parsePassages", () => {
-	it("is a function", ()=>{
+	it("is a function", () => {
 		expect(typeof parsePassages).toBe("function");
 	});
-	it("returns a map of title->body pairs", () => {
+	it("returns a map of title->passage pairs", () => {
 		expect(parsePassages("::title\nbody")).toEqual({
-			title: "body"
+			title: {
+				title: "title",
+				body: "body"
+			}
 		});
 		expect(parsePassages("::a\n1\n::b\n2\n::c\n3")).toEqual({
-			a: "1",
-			b: "2",
-			c: "3"
+			a: {
+				title: "a",
+				body: "1"
+			},
+			b: {
+				title: "b",
+				body: "2"
+			},
+			c: {
+				title: "c",
+				body: "3"
+			}
 		});
 	});
 	it("removes `\\r` characters", () => {
 		expect(parsePassages("::ti\rtle\n\rbo\rdy")).toEqual({
-			title: "body"
+			title: {
+				title: "title",
+				body: "body"
+			}
 		});
 	});
 	it("ignores text above first passage title", () => {
@@ -34,11 +49,19 @@ describe("parsePassages", () => {
 	});
 
 	describe("passage titles", () => {
-		it("are strings", ()=>{
-			expect(Object.keys(parsePassages("::title\nbody"))[0]).toBe("title");
+		it("are strings", () => {
+			expect(Object.keys(parsePassages("::title\nbody"))[0]).toBe(
+				"title"
+			);
 			expect(Object.keys(parsePassages("::1\nbody"))[0]).toBe("1");
 			expect(Object.keys(parsePassages("::null\nbody"))[0]).toBe("null");
-			expect(Object.keys(parsePassages("::undefined\nbody"))[0]).toBe("undefined");
+			expect(Object.keys(parsePassages("::undefined\nbody"))[0]).toBe(
+				"undefined"
+			);
+		});
+		it("are maps keys and passage properties", () => {
+			const p = parsePassages("::title\nbody");
+			expect(Object.keys(p)[0]).toBe(p.title.title);
 		});
 		it("end at the first `\\n` character", () => {
 			expect(
@@ -61,14 +84,18 @@ describe("parsePassages", () => {
 		});
 	});
 	describe("passage bodies", () => {
-		it("are strings", ()=>{
-			expect(parsePassages("::title\nbody")["title"]).toBe("body");
-			expect(parsePassages("::title\n1")["title"]).toBe("1");
-			expect(parsePassages("::title\nnull")["title"]).toBe("null");
-			expect(parsePassages("::title\nundefined")["title"]).toBe("undefined");
+		it("are strings", () => {
+			expect(parsePassages("::title\nbody")["title"].body).toBe("body");
+			expect(parsePassages("::title\n1")["title"].body).toBe("1");
+			expect(parsePassages("::title\nnull")["title"].body).toBe("null");
+			expect(parsePassages("::title\nundefined")["title"].body).toBe(
+				"undefined"
+			);
 		});
 		it("have leading/trailing whitespace trimmed", () => {
-			expect(parsePassages("::title\n body \n")["title"]).toBe("body");
+			expect(parsePassages("::title\n body \n")["title"].body).toBe(
+				"body"
+			);
 		});
 		it("are not empty", () => {
 			expect(() => parsePassages("::title\n")).toThrow();

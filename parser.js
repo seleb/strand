@@ -1,7 +1,7 @@
 /**
- * Converts source text into a map of title->body pairs
+ * Converts source text into a map of title->passage pairs
  * @param {string} source Source text to parse
- * @returns {object} Map of passage titles to passage bodies
+ * @returns {object} Map of passage titles to passage objects {title: {title,body}}
  */
 export function parsePassages(source) {
 	// sanitize: remove unneeded \r characters and any leading/trailing space
@@ -37,7 +37,10 @@ export function parsePassages(source) {
 		if (passages[title]) {
 			throw new Error(`Multiple passages titled "${title}" found`);
 		}
-		passages[title] = body;
+		passages[title] = {
+			title,
+			body
+		};
 	}
 	return passages;
 }
