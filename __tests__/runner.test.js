@@ -1,8 +1,10 @@
 import Runner, { defaultPassage } from "../runner";
 
-const renderer = {
+// most basic valid renderer
+// for use in non-renderer tests
+const renderer = Object.freeze({
 	displayPassage: passage => Promise.resolve()
-};
+});
 
 describe("Runner", () => {
 	it("is an instantiable class", () => {
