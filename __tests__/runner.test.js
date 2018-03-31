@@ -63,42 +63,17 @@ describe("Runner", () => {
 			const r = new Runner();
 			return expect(r.goto("test")).resolves.toBeUndefined();
 		});
-		it("`currentPassage` is target passage after promise completes", () => {
+		it("calls `displayPassage` with target passage", () => {
 			expect.assertions(1);
 			const r = new Runner("::title\nbody");
+			const displayPassageSpy = jest.spyOn(r, "displayPassage");
 			return r
 				.goto("title")
-				.then(() => expect(r.currentPassage.title).toBe("title"));
-		});
-		it("`currentPassage` is default passage after promise completes if target was invalid", () => {
-			expect.assertions(1);
-			const r = new Runner();
-			return r
-				.goto("test")
 				.then(() =>
-					expect(r.currentPassage.title).toBe(defaultPassage.title)
+					expect(displayPassageSpy).toHaveBeenCalledWith(
+						r.currentPassage
+					)
 				);
-		});
-		it("rejects if target and default passage are invalid", () => {
-			expect.assertions(1);
-			const r = new Runner();
-			r.passages[defaultPassage.title] = null;
-			return expect(r.goto("test")).rejects.toBeDefined();
-		});
-		it("`currentPassage.title` at time of call has been pushed to history after promise completes", () => {
-			expect.assertions(1);
-			const r = new Runner();
-			r.currentPassage = {
-				title: "history check"
-			};
-			return r
-				.goto("test")
-				.then(() => expect(r.history.pop()).toBe("history check"));
-		});
-		it("history is not pushed if `currentPassage` is falsey", () => {
-			expect.assertions(1);
-			const r = new Runner();
-			return r.goto("test").then(() => expect(r.history.length).toBe(0));
 		});
 	});
 
@@ -120,29 +95,44 @@ describe("Runner", () => {
 			return r
 				.goto("a")
 				.then(() => r.goto("b"))
-				.then(() => r.back())
-				.then(() => expect(gotoSpy).toHaveBeenCalledWith("a"));
+				.then(() => {
+					const h = r.history[r.history.length - 1];
+					return r
+						.back()
+						.then(() => expect(gotoSpy).toHaveBeenCalledWith(h));
+				});
 		});
 		it("history has been popped after promise completes", () => {
-			expect.assertions(1);
+			expect.assertions(2);
 			const r = new Runner("::a\n1\n::b\n2\n::c\n3");
 			return r
 				.goto("a")
 				.then(() => r.goto("b"))
 				.then(() => r.goto("c"))
-				.then(() => r.back())
-				.then(() => expect(r.history).toEqual(["a"]));
+				.then(() => {
+					const h = r.history.slice();
+					return r
+						.back()
+						.then(() => {
+							expect(r.history).toEqual(h.slice(0, -1));
+							expect(r.history).toEqual(["a"]);
+						});
+				});
 		});
 		it("resolves with title of new current passage", () => {
-			expect.assertions(1);
+			expect.assertions(2);
 			const r = new Runner("::a\n1\n::b\n2\n::c\n3");
-			return expect(
-				r
-					.goto("a")
-					.then(() => r.goto("b"))
-					.then(() => r.goto("c"))
-					.then(() => r.back())
-			).resolves.toBe("b");
+			return r
+				.goto("a")
+				.then(() => r.goto("b"))
+				.then(() => r.goto("c"))
+				.then(() => {
+					const h = r.history.slice();
+					return r.back().then(passage => {
+						expect(passage).toBe(r.currentPassage.title);
+						expect(passage).toBe("b");
+					});
+				});
 		});
 		it("rejects if called when there is no history", () => {
 			expect.assertions(1);
@@ -185,27 +175,30 @@ describe("Runner", () => {
 		});
 	});
 
-	describe("transitionIn", () => {
-		// TODO
+	describe("getPassageWithTitle", () => {
 		it("is a function", () => {
 			const r = new Runner();
-			expect(typeof r.transitionIn).toBe("function");
+			expect(typeof r.getPassageWithTitle).toBe("function");
 		});
-		it("returns a promise", () => {
-			const r = new Runner();
-			expect(r.transitionIn()).toBeInstanceOf(Promise);
+		it("returns the passage with the provided title", () => {
+			const r = new Runner("::title\nbody");
+			const p = r.getPassageWithTitle("title");
+			expect(p.title).toBe("title");
+			expect(p.body).toBe("body");
+			expect(Object.keys(p)).toContain("passage");
 		});
-	});
-
-	describe("transitionOut", () => {
-		// TODO
-		it("is a function", () => {
+		it("returns default passage if target is not found/invalid", () => {
 			const r = new Runner();
-			expect(typeof r.transitionOut).toBe("function");
+			const p = r.getPassageWithTitle("title");
+			expect(p.title).toBe(defaultPassage.title);
+			expect(p.body).toBe(defaultPassage.body);
+			expect(Object.keys(p)).toContain("passage");
 		});
-		it("returns a promise", () => {
+		it("fails if target and default passage are invalid", () => {
+			expect.assertions(1);
 			const r = new Runner();
-			expect(r.transitionOut()).toBeInstanceOf(Promise);
+			r.passages[defaultPassage.title] = null;
+			return expect(() => r.getPassageWithTitle("test")).toThrow();
 		});
 	});
 
@@ -218,6 +211,35 @@ describe("Runner", () => {
 		it("returns a promise", () => {
 			const r = new Runner();
 			expect(r.displayPassage()).toBeInstanceOf(Promise);
+		});
+		it("`currentPassage` is provided passage after promise completes", () => {
+			expect.assertions(1);
+			const r = new Runner("::title\nbody");
+			const p = r.getPassageWithTitle("title");
+			return r
+				.displayPassage(p)
+				.then(() => expect(r.currentPassage).toBe(p));
+		});
+		it("`currentPassage.title` at time of call has been pushed to history after promise completes", () => {
+			expect.assertions(1);
+			const r = new Runner();
+			r.currentPassage = {
+				title: "history check"
+			};
+			return r
+				.displayPassage(r.getPassageWithTitle("title"))
+				.then(() => expect(r.history.pop()).toBe("history check"));
+		});
+		it("history is not pushed if `currentPassage` is falsey", () => {
+			expect.assertions(1);
+			const r = new Runner();
+			return r
+				.displayPassage(r.getPassageWithTitle("title"))
+				.then(() => expect(r.history.length).toBe(0));
+		});
+		it("tells renderer to display passage", () => {
+			// TODO
+			throw new Error();
 		});
 	});
 });

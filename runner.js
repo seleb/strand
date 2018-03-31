@@ -49,13 +49,11 @@ export default class {
 		this.passages[defaultTitle] =
 			this.passages[defaultTitle] || defaultPassage;
 	}
+	getPassageWithTitle(title) {
+	}
 	goto(title) {
 	}
 	back() {
-	}
-	transitionIn(passage) {
-	}
-	transitionOut(passage) {
 	}
 	displayPassage(passage) {
 	}
