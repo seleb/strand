@@ -15,11 +15,20 @@ export default class {
 	constructor(source) {
 		this.history = [];
 		this.currentPassage = null;
-		this._evalInScope = ((script)=>eval(script)).bind(this);
+		this._evalInScope = (script => eval(script)).bind(this);
 
 		this.setSource(source);
 	}
-	eval(script=""){
+	/**
+	 * Evaluates a provided script,
+	 * using the runner as execution scope.
+	 *
+	 * @param {string} script Script to evaluate
+	 * @returns {any} Evaluation of script
+	 */
+	eval(script = "") {
+		console.log("Running script:", script);
+		return this._evalInScope(script);
 	}
 
 	/**
