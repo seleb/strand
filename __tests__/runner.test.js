@@ -4,7 +4,7 @@ describe("Runner", () => {
 	it("is an instantiable class", () => {
 		expect(typeof Runner).toBe("function");
 		expect(typeof Runner.prototype).toBe("object");
-		expect(new Runner() instanceof Runner).toBe(true);
+		expect(new Runner()).toBeInstanceOf(Runner);
 	});
 	it("`setSource` is called with the provided argument on initialization", () => {
 		const setSourceSpy = jest.spyOn(Runner.prototype, "setSource");
@@ -56,7 +56,7 @@ describe("Runner", () => {
 		});
 		it("returns a promise", () => {
 			const r = new Runner();
-			expect(r.goto() instanceof Promise).toBe(true);
+			expect(r.goto()).toBeInstanceOf(Promise);
 		});
 		it("resolves with no value", () => {
 			expect.assertions(1);
@@ -193,7 +193,7 @@ describe("Runner", () => {
 		});
 		it("returns a promise", () => {
 			const r = new Runner();
-			expect(r.transitionIn() instanceof Promise).toBe(true);
+			expect(r.transitionIn()).toBeInstanceOf(Promise);
 		});
 	});
 
@@ -205,7 +205,7 @@ describe("Runner", () => {
 		});
 		it("returns a promise", () => {
 			const r = new Runner();
-			expect(r.transitionOut() instanceof Promise).toBe(true);
+			expect(r.transitionOut()).toBeInstanceOf(Promise);
 		});
 	});
 
@@ -217,7 +217,7 @@ describe("Runner", () => {
 		});
 		it("returns a promise", () => {
 			const r = new Runner();
-			expect(r.displayPassage() instanceof Promise).toBe(true);
+			expect(r.displayPassage()).toBeInstanceOf(Promise);
 		});
 	});
 });
