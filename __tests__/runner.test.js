@@ -191,6 +191,10 @@ describe("Runner", () => {
 			const r = new Runner();
 			expect(typeof r.transitionIn).toBe("function");
 		});
+		it("returns a promise", () => {
+			const r = new Runner();
+			expect(r.transitionIn() instanceof Promise).toBe(true);
+		});
 	});
 
 	describe("transitionOut", () => {
@@ -199,6 +203,10 @@ describe("Runner", () => {
 			const r = new Runner();
 			expect(typeof r.transitionOut).toBe("function");
 		});
+		it("returns a promise", () => {
+			const r = new Runner();
+			expect(r.transitionOut() instanceof Promise).toBe(true);
+		});
 	});
 
 	describe("displayPassage", () => {
@@ -206,6 +214,10 @@ describe("Runner", () => {
 		it("is a function", () => {
 			const r = new Runner();
 			expect(typeof r.displayPassage).toBe("function");
+		});
+		it("returns a promise", () => {
+			const r = new Runner();
+			expect(r.displayPassage() instanceof Promise).toBe(true);
 		});
 	});
 });
