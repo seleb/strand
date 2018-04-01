@@ -153,6 +153,23 @@ describe("parsePassage", () => {
 		expect(p.extra).toBe("property");
 	});
 	describe("`program` property", () => {
+		it("throws if an `<<if>>` block is started but not closed", () => {
+			expect(() =>
+				parsePassage({ title: "title", body: "<<if a>>" })
+			).toThrow();
+			expect(() =>
+				parsePassage({ title: "title", body: "<<if a>><<endif>>" })
+			).not.toThrow();
+			expect(() =>
+				parsePassage({ title: "title", body: "<<if a>><<elseif b>>" })
+			).toThrow();
+			expect(() =>
+				parsePassage({
+					title: "title",
+					body: "<<if a>><<elseif b>><<endif>>"
+				})
+			).not.toThrow();
+		});
 		it("parses stuff correctly :shrug:", () => {
 			expect(
 				parsePassage({
