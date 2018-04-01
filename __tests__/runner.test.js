@@ -3,7 +3,7 @@ import Runner, { defaultPassage } from "../runner";
 // most basic valid renderer
 // for use in non-renderer tests
 const renderer = Object.freeze({
-	displayPassage: passage => Promise.resolve()
+	displayPassage: () => Promise.resolve()
 });
 
 describe("Runner", () => {
@@ -166,7 +166,7 @@ describe("Runner", () => {
 				});
 		});
 		it("resolves with title of new current passage", () => {
-			expect.assertions(2);
+			expect.assertions(3);
 			const r = new Runner({
 				source: "::a\n1\n::b\n2\n::c\n3",
 				renderer
@@ -179,6 +179,7 @@ describe("Runner", () => {
 					const h = r.history.slice();
 					return r.back().then(passage => {
 						expect(passage).toBe(r.currentPassage.title);
+						expect(passage).toBe(h.pop());
 						expect(passage).toBe("b");
 					});
 				});
