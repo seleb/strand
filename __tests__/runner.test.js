@@ -233,15 +233,11 @@ describe("Runner", () => {
 			const r = new Runner({ source: "::title\nbody", renderer });
 			const p = r.getPassageWithTitle("title");
 			expect(p.title).toBe("title");
-			expect(p.body).toBe("body");
-			expect(Object.keys(p)).toContain("passage");
 		});
 		it("returns default passage if target is not found/invalid", () => {
 			const r = new Runner({ renderer });
 			const p = r.getPassageWithTitle("title");
 			expect(p.title).toBe(defaultPassage.title);
-			expect(p.body).toBe(defaultPassage.body);
-			expect(Object.keys(p)).toContain("passage");
 		});
 		it("fails if target and default passage are invalid", () => {
 			expect.assertions(1);
