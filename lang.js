@@ -21,6 +21,7 @@ export default [
 		getValue: (match, condition) => condition.trim()
 	},
 	{
+		// else -> elseif true
 		name: "elseif",
 		regex: String.raw`<<\s*?else?\s*?>>`,
 		getValue: () => "true"
@@ -36,6 +37,7 @@ export default [
 		getValue: (match, statement) => statement.trim()
 	},
 	{
+		// set a=b -> do this.a=b
 		name: "do",
 		regex: String.raw`<<\s*?set\s*?(.+?)\s*?=(.+?)\s*?>>\n?`,
 		getValue: (match, identifier, value) =>
