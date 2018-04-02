@@ -115,6 +115,7 @@ function parse(tokens) {
 				stack.pop(); // exit condition
 				break;
 			case "action":
+			case "do":
 				stack[stack.length - 1].push(token);
 				break;
 			case "fill":
