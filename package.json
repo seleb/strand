@@ -1,9 +1,9 @@
 {
-	"name": "string-synonym",
+	"name": "strand",
 	"version": "1.0.0",
 	"description": "Basic narrative engine core inspired by Twine",
 	"main": "main.js",
-	"repository": "github:seleb/string-synonym",
+	"repository": "github:seleb/strand",
 	"author": "Sean S. LeBlanc <sean.s.leblanc@gmail.com>",
 	"license": "MIT",
 	"dependencies": {},
