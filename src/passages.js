@@ -1,3 +1,5 @@
+import { compile } from "./compiler";
+
 /**
  * Converts source text into a map of title->passage pairs
  * @param {string} source Source text to parse
@@ -45,7 +47,7 @@ export function parsePassages(source) {
 	return passages;
 }
 
-export function parsePassage(passage) {
+export function compilePassage(passage) {
 	if (!passage) {
 		throw new Error("No passage provided");
 	}
@@ -58,6 +60,6 @@ export function parsePassage(passage) {
 	}
 	return {
 		...passage,
-		passage: null // TODO
+		program: compile(passage.body)
 	};
 }

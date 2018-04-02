@@ -1,0 +1,577 @@
+hey here's some garbo that shouldn't get parsed
+
+::mypassage
+some intro text with a [[link]] and a custom [[action|this.goto("other passage")]] 
+
+::link
+<<do this.linkClicked=true>>
+this passage appears when you click the link
+
+::other passage
+<<if this.linkClicked>>
+this text shows up if you clicked the link
+<<else>>
+this text shows up if you didn't
+<<endif>>
+
+
+::start
+<<set setCallsign = function(){}>>
+<<set waitAndGoto = function(p){setTimeout(function(){this.goto(p)}.bind(this),100)}.bind(this)>>
+<<set endCurrentConversation = this.goto.bind(this)>>
+<<set autoRespond = function(){this.waitAndGoto(`${this.currentPassage.title}-RESPONSE`)}.bind(this)>>
+CQ CQ anyone on the line?
+
+[[BE FRIENDLY]]
+[[BE CURIOUS]]
+
+::BE FRIENDLY
+<<do this.setCallsign("YOU")>>
+hello there! just a new ham, living life and looking for love.
+<<do this.autoRespond()>>
+
+::BE FRIENDLY-RESPONSE
+<<do this.setCallsign("???")>>
+hey there sonny, what's going on? how're ya feeling? actually, first things first, what do i call ya?
+
+[[BE SUGGESTIVE]]
+[[BE HOMEY]]
+
+::BE CURIOUS
+<<do this.setCallsign("YOU")>>
+oh, wow! didn't expect to hear anyone on here! picked this up at the gas station down the road from a little fella named Ronny along with a bottle of Dr. Pepper and three twizzlers.
+<<do this.autoRespond()>>
+
+::BE CURIOUS-RESPONSE
+<<do this.setCallsign("???")>>
+oh well nice to meet ya, nice to hear someone else on the air today. you got yourself a callsign bud?
+
+[[BE SUGGESTIVE]]
+[[BE HOMEY]]
+
+
+::BE SUGGESTIVE
+<<do this.setCallsign("YOU")>>
+<<set yourCallsign="BIG CHICKEN">>
+well they call me big chicken. and let me tell you what, it's not cause i got feathers.
+<<do this.autoRespond()>>
+
+::BE SUGGESTIVE-RESPONSE
+<<do this.setCallsign("MASTER HAM")>>
+well big chicken, im no little chicken myself, but you can call me master ham.
+<<do this.waitAndGoto("MASTER HAM SIGN-OFF 1")>>
+
+::BE HOMEY
+<<do this.setCallsign("YOU")>>
+<<set yourCallsign="LITTLE TURKEY">>
+oh well you can call me little turkey. throw in some mashed potatoes and a side of green beans and you've got yourself a thanksgiving.
+<<do this.autoRespond()>>
+
+::BE HOMEY-RESPONSE
+<<do this.setCallsign("MASTER HAM")>>
+pleasure to meet ya, gobble gobble, heh heh! I do like me some stuffed bird, but im more of ham-boy myself. You could even say i'm... a master of ham. that's me, master ham, nice to meet ya.
+<<do this.waitAndGoto("MASTER HAM SIGN-OFF 1")>>
+
+::MASTER HAM SIGN-OFF 1
+<<do this.setCallsign("MASTER HAM")>>
+sounds like you're pretty new here. im sure you know by now that if you twist that knob over there, it changes the frequency of your radio. you can find all sorts of folks on the hamverse.
+<<do this.waitAndGoto("MASTER HAM SIGN-OFF 2")>>
+
+::MASTER HAM SIGN-OFF 2
+<<do this.setCallsign("MASTER HAM")>>
+oh yeah, all sorts of... interesting folks.
+<<do this.waitAndGoto("MASTER HAM SIGN-OFF 3")>>
+
+::MASTER HAM SIGN-OFF 3
+<<do this.setCallsign("MASTER HAM")>>
+tell you what, how about you twist that knob to 12.7. It sounds like you're gonna need yourself some contacts; if you head over there, i bet you'll find yourself some good'uns.
+<<do this.waitAndGoto("MASTER HAM SIGN-OFF 4 "+this.yourCallsign)>>
+
+::MASTER HAM SIGN-OFF 4 BIG CHICKEN
+<<do this.setCallsign("MASTER HAM")>>
+i'll catch ya later big chicken, master ham signing off!
+<<do this.endCurrentConversation("GENTLE JIM")>>
+
+::MASTER HAM SIGN-OFF 4 LITTLE TURKEY
+<<do this.setCallsign("MASTER HAM")>>
+i'll catch ya later little turkey, master ham signing off!
+<<do this.endCurrentConversation("GENTLE JIM")>>
+
+
+
+
+
+
+
+::BIG QUEEN
+<<do this.setCallsign("???")>>
+<<set frequency="6.90">>
+calling all ham-lovers, anyone out there?
+<<do this.waitAndGoto("BIG QUEEN 2")>>
+
+::BIG QUEEN 2
+<<do this.setCallsign("BIG QUEEN")>>
+anyone got time to spare for big queen?
+
+[[BE EAGER]]
+[[BE RESERVED]]
+
+::BE EAGER
+<<do this.setCallsign("YOU")>>
+oh i got more than enough time for you big queen.
+<<do this.autoRespond()>>
+
+::BE EAGER-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+hoo boy, am i glad to hear it! you would not believe how long-
+<<do this.waitAndGoto("BIG QUEEN SHOUT")>>
+
+::BE RESERVED
+<<do this.setCallsign("YOU")>>
+i can probably spare a moment or two; what's going on big queen?
+<<do this.autoRespond()>>
+
+::BE RESERVED-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+well hey there squirt. been too long since i've heard-
+<<do this.waitAndGoto("BIG QUEEN SHOUT")>>
+
+::BIG QUEEN SHOUT
+Johnathan you put that down! momma's talking to a real stud right now and if you don't shut your little yap im gonna shut it for ya!
+<<do this.waitAndGoto("BIG QUEEN SHOUT 2")>>
+
+::BIG QUEEN SHOUT 2
+Sorry 'bout that squirt. I swear these boys'd tear the place down if I let them have their way.
+<<do this.waitAndGoto("BIG QUEEN SHOUT 3")>>
+
+::BIG QUEEN SHOUT 3
+So squirt: what gets you *choochin* at night?
+
+[[BE CAREFREE]]
+[[BE PASSIONATE]]
+
+::BE CAREFREE
+<<do this.setCallsign("YOU")>>
+ah you know, suck on a juice box, watch a little news. kick back, relax, take a shower. shave my pits, eat a couple cheetos, go to bed.
+<<do this.autoRespond()>>
+
+::BE CAREFREE-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+oh im sucking on a juice box right now; always keep my van loaded up for my boys. you got any kids yerself?
+
+[[BE EVASIVE]]
+[[BE DIRECT]]
+
+::BE PASSIONATE
+<<do this.setCallsign("YOU")>>
+well big queen, i like to get down in my gitch, flex in front of the mirror and say "hey"... you know, just practice talking to women like you.
+<<do this.waitAndGoto("BE PASSIONATE 2")>>
+
+::BE PASSIONATE 2
+"hey hot stuff, i like those thighs of yours".
+<<do this.waitAndGoto("BE PASSIONATE 3")>>
+
+::BE PASSIONATE 3
+though really, im more of a foot man myself; tell me, how does big queen feel about foot rubs?
+<<do this.waitAndGoto("BE PASSIONATE-RESPONSE")>>
+
+::BE PASSIONATE-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+ever since i had little Roger, aint no one wanna see these footsies. i gots myself a bad case of gout thanks to this bugger. you got any little monsters yerself?
+
+[[BE EVASIVE]]
+[[BE DIRECT]]
+
+::BE EVASIVE
+<<do this.setCallsign("YOU")>>
+oh you know, never met a woman. least not a real one. funny how life works out.
+<<do this.autoRespond()>>
+
+::BE EVASIVE-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+tsk tsk tsk, no wonder you don't have any kids. cant even tell the sound of a real woman when it's pounding right on those 
+eardrums of yours. i pity you, you sad sad man. over and out.
+<<do this.endCurrentConversation("PBWRITER")>>
+
+::BE DIRECT
+<<do this.setCallsign("YOU")>>
+nah im sure you've heard the story before, always on the road. aint go no time for the little tykes, just me myself and i, all grown, all alone.
+<<do this.autoRespond()>>
+
+::BE DIRECT-RESPONSE
+<<do this.setCallsign("BIG QUEEN")>>
+well they aint worth it, these little arsewipes, they're just a pile of trouble. it's too bad they're around, or maybe the two of us
+ coulda spent a little more time together.
+<<do this.waitAndGoto("BE DIRECT-RESPONSE 2")>>
+
+::BE DIRECT-RESPONSE 2
+then again, aint no reason we cant chat some more. tell you what, you start feeling lonely, you just give your pal suzanne a call. over and out.
+<<do this.endCurrentConversation("PBWRITER")>>
+
+
+
+
+
+
+::GENTLE JIM
+<<do this.setCallsign("???")>>
+<<set frequency="12.7">>
+...as i sit here on my porch today, i see johnathan, and he's just out there with all his friends. eating his acorn. johnathan's one of my favourite squirrels, and - oh! there he goes off into his tree. Once again this is gentle jim, is anyone listening in today?
+
+[[BE MELLOW]]
+[[BE TREPIDACIOUS]]
+
+::BE MELLOW
+<<do this.setCallsign("YOU")>>
+oh yeah, just tuned in. new to this whole ham thing, just surfing the waves. feelin em out. how're you feeling jim?
+<<do this.autoRespond()>>
+
+::BE MELLOW-RESPONSE
+<<do this.setCallsign("GENTLE JIM")>>
+oh well im feeling mighty fine, mighty fine indeed.
+<<do this.waitAndGoto("GENTLE JIM 2")>>
+
+::BE TREPIDACIOUS
+<<do this.setCallsign("YOU")>>
+oh... yeah... im here.
+<<do this.autoRespond()>>
+
+::BE TREPIDACIOUS-RESPONSE
+<<do this.setCallsign("GENTLE JIM")>>
+well, seems we got ourselves a listener today. nice to meet you fella.
+<<do this.waitAndGoto("GENTLE JIM 2")>>
+
+::GENTLE JIM 2
+<<do this.setCallsign("GENTLE JIM")>>
+just the other day i was washing the dishes, and i broke my favourite mug. broke the handle clear off! not to worry though, not to worry...
+<<do this.waitAndGoto("GENTLE JIM 3")>>
+
+::GENTLE JIM 3
+<<do this.setCallsign("GENTLE JIM")>>
+i just got out my trusty sandpaper, gave it a good rubbing, and got myself a brand new favourite cup. anyway, that's enough about ol jimmy, why don't you tell me a little story about yourself?
+
+[[BE PERSONAL]]
+[[BE PROFESSIONAL]]
+
+::BE PERSONAL
+<<do this.setCallsign("YOU")>>
+well... sure. so, just the other day I was cruising down 95 with a full load, had to get there by midnight ya know. 
+<<do this.waitAndGoto("BE PERSONAL 2")>>
+
+::BE PERSONAL 2
+<<do this.setCallsign("YOU")>>
+Well the ol' "water tank" was getting pretty full and I didn't have time to pull over... so I grabbed my trusty bottle and lined 'er up and let loose. Didn't get it all in but 40% ain't bad.
+<<do this.waitAndGoto("BE PERSONAL-RESPONSE")>>
+
+::BE PERSONAL-RESPONSE
+<<do this.setCallsign("GENTLE JIM")>>
+No worries, no worries I've been there my self. A bottle ain't an easy target, especially when your nickname is Gentle Giant.
+<<do this.waitAndGoto("GENTLE JIM SIGN-OFF")>>
+
+::BE PROFESSIONAL
+<<do this.setCallsign("YOU")>>
+well, this one time I was delivering this shipment of potatoes down to Albuquerque. The famine had been getting worse and I needed to get there ASAP.
+<<do this.waitAndGoto("BE PROFESSIONAL 2")>>
+
+::BE PROFESSIONAL 2
+<<do this.setCallsign("YOU")>>
+It was a raining mighty heavy but I needed to be there potato hero, I got there just in time and opened up the back of my ol' girl but all them potatoes were sour. Those fumes put me in the hospital for three weeks.
+<<do this.waitAndGoto("BE PROFESSIONAL-RESPONSE")>>
+
+::BE PROFESSIONAL-RESPONSE
+<<do this.setCallsign("GENTLE JIM")>>
+well, that was riveting, you had me glued to my seat. I think you might be my new hero, and that's no easy feat.
+<<do this.waitAndGoto("GENTLE JIM SIGN-OFF")>>
+
+::GENTLE JIM SIGN-OFF
+<<do this.setCallsign("GENTLE JIM")>>
+anyways, it was nice to hear from another ham head. Gentle Jim signing off.
+<<do this.endCurrentConversation("BIG QUEEN")>>
+
+
+
+
+
+::CAPTAIN
+<<do this.setCallsign("???")>>
+<<set frequency="32.2">>
+testing, testing, one two three. alpha. bravo. charlie.
+<<do this.waitAndGoto("CAPTAIN 2")>>
+
+::CAPTAIN 2
+...
+<<do this.waitAndGoto("CAPTAIN 3")>>
+
+::CAPTAIN 3
+is it working? can anyone hear me?
+
+[[BE ENCOURAGING]]
+[[BE INQUISITIVE]]
+
+::BE ENCOURAGING
+<<do this.setCallsign("YOU")>>
+It sure is buddy! I can hear you loud and clear.
+<<do this.autoRespond()>>
+
+::BE ENCOURAGING-RESPONSE
+<<do this.setCallsign("???")>>
+Oh good evening sir! I can't believe it, it's actually working!
+<<do this.waitAndGoto("CAPTAIN CALLSIGN")>>
+
+::BE INQUISITIVE
+<<do this.setCallsign("YOU")>>
+That depends: who's asking?
+<<do this.autoRespond()>>
+
+::BE INQUISITIVE-RESPONSE
+<<do this.setCallsign("???")>>
+Aw shucks... I didn't even pick out a name yet! Um...
+<<do this.waitAndGoto("CAPTAIN CALLSIGN")>>
+
+::CAPTAIN CALLSIGN
+<<do this.setCallsign("CAPTAIN")>>
+You can call me THE CAPTAIN. Or even, "oh captain my captain"! Ha!
+<<do this.waitAndGoto("CAPTAIN CALLSIGN 2")>>
+
+::CAPTAIN CALLSIGN 2
+Get it?
+
+[[BE SAVVY]]
+[[BE IGNORANT]]
+
+
+::BE SAVVY
+<<do this.setCallsign("YOU")>>
+Oh, heh, I love Robin Williams.
+<<do this.autoRespond()>>
+
+::BE SAVVY-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+Great to meet another connoisseur of his body of work! That movie was inspiring.
+<<do this.waitAndGoto("CAPTAIN CALLSIGN 3")>>
+
+::BE IGNORANT
+<<do this.setCallsign("YOU")>>
+...I don't get it.
+<<do this.autoRespond()>>
+
+::BE IGNORANT-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+WHAT?! You've never seen "Dead Poets Society"!? Oh my god it changed my life!
+<<do this.waitAndGoto("CAPTAIN CALLSIGN 3")>>
+
+::CAPTAIN CALLSIGN 3
+In fact, I've been building this radio out of a kit as an experiment to show my students and let me tell you what, it's been giving me one heck of a time. Almost set fire to my credenza when I tried to get the power supply hooked up!
+<<do this.waitAndGoto("CAPTAIN CALLSIGN 4")>>
+
+::CAPTAIN CALLSIGN 4
+You're actually the first person I've heard on air, why don't you tell me a little bit about yourself?
+
+[[BE SOCIABLE]]
+[[BE HUMBLE]]
+
+
+::BE SOCIABLE
+<<do this.setCallsign("YOU")>>
+Oh well I just got into this ham business myself! Lots of nice folk, and it sure makes the truckin' go by more quick-like.
+<<do this.autoRespond()>>
+
+::BE SOCIABLE-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+Oh I bet you've got a dandy ol' life. Living large, living free, just you and the road, right? Gee whiz, that sounds so exciting...
+<<do this.waitAndGoto("SAFETY FIRST")>>
+
+::BE HUMBLE
+<<do this.setCallsign("YOU")>>
+Oh well I'm just a simple trucker. Dunno much about this ham business; gives me something to take my mind off the road I guess.
+<<do this.autoRespond()>>
+
+::BE HUMBLE-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+Wait, are you driving right now? That sure don't sound safe sir. I hope you're at least taking the proper precautions.
+<<do this.waitAndGoto("SAFETY FIRST")>>
+
+::SAFETY FIRST
+Both eyes on the road and both hands on the wheel!
+
+[[BE DANGEROUS]]
+[[BE BASHFUL]]
+
+::BE DANGEROUS
+<<do this.setCallsign("YOU")>>
+Nah, I'm used to driving manual; can't help but keep one hand free. Feels wrong to be driving without that stick in my hand.
+<<do this.autoRespond()>>
+
+::BE DANGEROUS-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+Oh- well- I can't say I know much about driving, but it sure sounds like you've got a lot of experience.
+<<do this.waitAndGoto("BE DANGEROUS-RESPONSE 2")>>
+
+::BE DANGEROUS-RESPONSE 2
+Well hey, if you ever end up tripping down to Eureka Springs, Arkansas, maybe the two of us can go for a ride.
+<<do this.waitAndGoto("BE DANGEROUS-RESPONSE 3")>>
+
+::BE DANGEROUS-RESPONSE 3
+You can teach me how to drive stick!
+<<do this.endCurrentConversation("EPILOGUE")>>
+
+::BE BASHFUL
+<<do this.setCallsign("YOU")>>
+Oh... yeah, that'd probably be safer. Never been one much for following the safety procedures.
+<<do this.autoRespond()>>
+
+::BE BASHFUL-RESPONSE
+<<do this.setCallsign("CAPTAIN")>>
+Well that sure doesn't sound responsible.
+<<do this.waitAndGoto("BE BASHFUL-RESPONSE 2")>>
+
+::BE BASHFUL-RESPONSE 2
+But hey, you ever end up tripping down to Eureka Springs, Arkansas, maybe we can have ourselves a little hamfest.
+<<do this.waitAndGoto("BE BASHFUL-RESPONSE 3")>>
+
+::BE BASHFUL-RESPONSE 3
+Just so long as you're not driving.
+<<do this.endCurrentConversation("EPILOGUE")>>
+
+
+
+
+::PBWRITER
+<<do this.setCallsign("???")>>
+<<set frequency="4.20">>
+...anybody out there? it's me, PBWRITER, that weird reporter again. i'd love to hear a story or two.
+
+[[BE AMICABLE]]
+[[BE ARROGANT]]
+
+::BE AMICABLE
+<<do this.setCallsign("YOU")>>
+any chance you'd wanna to hear a story about a lonesome old trucker? lord knows I've got more than a few I could tell.
+<<do this.autoRespond()>>
+
+::BE AMICABLE-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+awesome! i love hearing from truckers. you guys see so much action out on the road.
+<<do this.waitAndGoto("PBWRITER 2")>>
+
+::BE ARROGANT
+<<do this.setCallsign("YOU")>>
+well there, aren't you lucky? you just so happen to be talkin to the most interesting trucker on the road!
+<<do this.autoRespond()>>
+
+::BE ARROGANT-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+maybe turn down the bragging, pal. i'm looking for human interest stories, not a new york times feature.
+<<do this.waitAndGoto("PBWRITER 2")>>
+
+::PBWRITER 2
+now, i've got to ask: is this chat on the record? i write a column on ham radio for my local newspaper, and i like to feature guests when i can.
+
+[[BE AMENABLE]]
+[[BE AVOIDANT]]
+
+::BE AMENABLE
+<<do this.setCallsign("YOU")>>
+absolutely. i don't mind bein' the centre of attention. ask away.
+<<do this.autoRespond()>>
+
+::BE AMENABLE-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+great! this is going to be fun.
+<<do this.waitAndGoto("PBWRITER 3")>>
+
+::BE AVOIDANT
+<<do this.setCallsign("YOU")>>
+er, i dunno, miss. i was kinda hopin we could maybe talk privately. you know, just you and me.
+<<do this.autoRespond()>>
+
+::BE AVOIDANT-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+well... alright. i'll keep this off-the-record for now. we can just talk.
+<<do this.waitAndGoto("PBWRITER 3")>>
+
+::PBWRITER 3
+<<do this.setCallsign("PBWRITER")>>
+so, big guy, how'd you get into trucking? i've talked to a lot of drivers and there's always a reason they take the job. what's yours?
+
+[[BE ABSOLUTE]]
+[[BE AFFLICTIVE]]
+
+::BE ABSOLUTE
+<<do this.setCallsign("YOU")>>
+oh, no special reason. i just like to drive. it's peaceful, really. kinda zen, you know?
+<<do this.autoRespond()>>
+
+::BE ABSOLUTE-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+really... there's no deeper story?
+<<do this.waitAndGoto("BE ABSOLUTE 2")>>
+
+::BE ABSOLUTE 2
+<<do this.setCallsign("YOU")>>
+nope.
+<<do this.waitAndGoto("BE ABSOLUTE 3")>>
+
+::BE ABSOLUTE 3
+<<do this.setCallsign("PBWRITER")>>
+huh. well, i'm glad the job makes you happy.
+<<do this.waitAndGoto("PBWRITER 4")>>
+
+::BE AFFLICTIVE
+<<do this.setCallsign("YOU")>>
+well, if i'm bein honest, it was because of my last relationship. when my partner broke up with me, i didn't know what to do.
+<<do this.waitAndGoto("BE AFFLICTIVE 2")>>
+
+::BE AFFLICTIVE 2
+<<do this.setCallsign("YOU")>>
+so i packed up my things, got my license, and hit the road.
+<<do this.waitAndGoto("BE AFFLICTIVE-RESPONSE")>>
+
+::BE AFFLICTIVE-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+i'm sorry to hear that. i hope the job has helped you figure things out. you'll meet someone new, i'm sure of it.
+<<do this.waitAndGoto("PBWRITER 4")>>
+
+::PBWRITER 4
+<<do this.setCallsign("PBWRITER")>>
+hey, sorry to cut this short, big guy, but I've got a meeting with my editor. maybe we can talk more another time?
+
+[[BE AFFABLE]]
+[[BE AMOROUS]]
+
+::BE AFFABLE
+<<do this.setCallsign("YOU")>>
+sure thing, it's been a pleasure. you know where to find me.
+<<do this.autoRespond()>>
+
+::BE AFFABLE-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+yeah, this was fun!
+<<do this.waitAndGoto("PBWRITER SIGN-OFF")>>
+
+::BE AMOROUS
+<<do this.setCallsign("YOU")>>
+sure. maybe this time we can talk about you. talk about... us.
+<<do this.autoRespond()>>
+
+::BE AMOROUS-RESPONSE
+<<do this.setCallsign("PBWRITER")>>
+mm, sounds like fun. it's a date, pal.
+<<do this.waitAndGoto("PBWRITER SIGN-OFF")>>
+
+::PBWRITER SIGN-OFF
+<<do this.setCallsign("PBWRITER")>>
+catch ya later, big guy. pbwriter, out.
+<<do this.endCurrentConversation("CAPTAIN")>>
+
+
+::EPILOGUE
+<<do this.setCallsign("???")>>
+<<set frequency=Math.floor(Math.random()*999)/10>>
+(the end)
+<<do this.endCurrentConversation("EPILOGUE 2")>>
+
+::EPILOGUE 2
+<<do this.setCallsign("???")>>
+<<set frequency=Math.floor(Math.random()*999)/10>>
+...

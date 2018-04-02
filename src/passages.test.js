@@ -1,4 +1,4 @@
-import { parsePassages, parsePassage } from "../parser";
+import { parsePassages, compilePassage } from "./passages";
 
 describe("parsePassages", () => {
 	it("is a function", () => {
@@ -105,28 +105,28 @@ describe("parsePassages", () => {
 	});
 });
 
-describe("parsePassage", () => {
+describe("compilePassage", () => {
 	it("is a function", () => {
-		expect(typeof parsePassage).toBe("function");
+		expect(typeof compilePassage).toBe("function");
 	});
 	it("accepts an object with `title` and `body` as an argument", () => {
-		expect(() => parsePassage()).toThrow();
-		expect(() => parsePassage("string")).toThrow();
-		expect(() => parsePassage({})).toThrow();
+		expect(() => compilePassage()).toThrow();
+		expect(() => compilePassage("string")).toThrow();
+		expect(() => compilePassage({})).toThrow();
 		expect(() =>
-			parsePassage({
+			compilePassage({
 				title: "title",
 				body: ""
 			})
 		).toThrow();
 		expect(() =>
-			parsePassage({
+			compilePassage({
 				title: "",
 				body: "body"
 			})
 		).toThrow();
 		expect(
-			parsePassage({
+			compilePassage({
 				title: "title",
 				body: "body"
 			})
@@ -134,21 +134,136 @@ describe("parsePassage", () => {
 	});
 
 	// TODO
-	it("returns", () => {
+	it("returned object has `program` property", () => {
 		expect(
-			parsePassage({
+			compilePassage({
 				title: "title",
 				body: "body"
-			})
+			}).program
 		).toBeDefined();
 	});
-	it("returned object preserves any extra non-spec properties", () => {
-		expect(
-			parsePassage({
-				title: "title",
-				body: "body",
-				extra: "property"
-			}).extra
-		).toBe("property");
+	it("returned object preserves `title`, `body`, and any extra non-spec properties", () => {
+		const p = compilePassage({
+			title: "title",
+			body: "body",
+			extra: "property"
+		});
+		expect(p.title).toBe("title");
+		expect(p.body).toBe("body");
+		expect(p.extra).toBe("property");
+	});
+	describe("`program` property", () => {
+		it("throws if an `<<if>>` block is started but not closed", () => {
+			expect(() =>
+				compilePassage({ title: "title", body: "<<if a>>" })
+			).toThrow();
+			expect(() =>
+				compilePassage({ title: "title", body: "<<if a>><<endif>>" })
+			).not.toThrow();
+			expect(() =>
+				compilePassage({ title: "title", body: "<<if a>><<elseif b>>" })
+			).toThrow();
+			expect(() =>
+				compilePassage({
+					title: "title",
+					body: "<<if a>><<elseif b>><<endif>>"
+				})
+			).not.toThrow();
+		});
+		it("parses stuff correctly :shrug:", () => {
+			expect(
+				compilePassage({
+					title: "title",
+					body: "body"
+				}).program
+			).toEqual([
+				{
+					name: "text",
+					value: "body"
+				}
+			]);
+			expect(
+				compilePassage({
+					title: "title",
+					body: "simple sentence with a [[link]]."
+				}).program
+			).toEqual([
+				{
+					name: "text",
+					value: "simple sentence with a "
+				},
+				{
+					name: "action",
+					value: {
+						text: "link",
+						action: 'this.goto("link")'
+					}
+				},
+				{
+					name: "text",
+					value: "."
+				}
+			]);
+			expect(
+				compilePassage({
+					title: "title",
+					body:
+						"text<<if a>>1<<elseif b>>[[link]]<<if c>>3<<else>>[[text|action]]<<endif>><<endif>>."
+				}).program
+			).toEqual([
+				{
+					name: "text",
+					value: "text"
+				},
+				{
+					name: "condition",
+					value: [
+						{
+							condition: "a",
+							branch: [{ name: "text", value: "1" }]
+						},
+						{
+							condition: "b",
+							branch: [
+								{
+									name: "action",
+									value: {
+										text: "link",
+										action: 'this.goto("link")'
+									}
+								},
+								{
+									name: "condition",
+									value: [
+										{
+											condition: "c",
+											branch: [
+												{ name: "text", value: "3" }
+											]
+										},
+										{
+											condition: "true",
+											branch: [
+												{
+													name: "action",
+													value: {
+														text: "text",
+														action: "action"
+													}
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					name: "text",
+					value: "."
+				}
+			]);
+		});
 	});
 });
