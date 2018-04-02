@@ -108,6 +108,9 @@ function parse(tokens) {
 					break;
 				}
 			case "endif":
+				if (stack.length < 3) {
+					throw new Error("Tried to close if block, but one wasn't open");
+				}
 				stack.pop(); // exit condition's branch
 				stack.pop(); // exit condition
 				break;
