@@ -1,4 +1,4 @@
-import { parsePassages, parsePassage } from "./parser";
+import { parsePassages, compilePassage } from "./passages";
 
 const defaultTitle = "DEFAULT";
 export const defaultPassage = {
@@ -70,13 +70,13 @@ export default class {
 			if (!this.passages[title]) {
 				throw new Error(`Passage titled "${title}" not found"`);
 			}
-			return parsePassage(this.passages[title]);
+			return compilePassage(this.passages[title]);
 		} catch (err) {
 			console.error(
 				`Failed to parse passage titled "${title}", going to "${defaultTitle}" instead. Original error:`,
 				err
 			);
-			return parsePassage(this.passages[defaultTitle]);
+			return compilePassage(this.passages[defaultTitle]);
 		}
 	}
 
@@ -120,6 +120,9 @@ export default class {
 	 * Pushes the current passage (if there is one) to history,
 	 * then tells the renderer to display the passed-in passage
 	 *
+	 * The renderer can execute the program by calling `runner.execute(passage.program)`,
+	 * which will evaluate it and return the resulting list of nodes.
+	 *
 	 * Runner will be flagged as `busy` until renderer has finished.
 	 * Calling `displayPassage` while busy will throw an error.
 	 *
@@ -146,5 +149,32 @@ export default class {
 		return this.renderer.displayPassage(passage).then(() => {
 			this.busy = false;
 		});
+	}
+
+	/**
+	 * Executes a program tree, and returns the flattened result.
+	 *
+	 * @param {Object[]} program Program tree to execute
+	 * @returns {Object[]} Flattened program tree
+	 */
+	execute(program) {
+		return program.reduce((nodes, node) => {
+			switch (node.name) {
+				case "condition":
+					for (let branch of node.value) {
+						if (this.eval(branch.condition)) {
+							nodes.concat(this.execute(branch.branch));
+							break;
+						}
+					}
+					break;
+				case "do":
+					this.eval(node.value);
+					break;
+				default:
+					nodes.push(node);
+			}
+			return nodes;
+		}, []);
 	}
 }

@@ -1,110 +1,11 @@
-import { getLexer } from "../lexer";
-import myrules from "../lang";
+import { getLexer } from "lexer";
+import lexicon from "./lexicon";
 
-describe("getLexer", () => {
-	it("is a function", () => {
-		expect(getLexer).toBeInstanceOf(Function);
-	});
-	it("returns a function", () => {
-		expect(
-			getLexer([
-				{
-					name: "name",
-					regex: "$unmatchable regex",
-					getValue: () => {}
-				}
-			])
-		).toBeInstanceOf(Function);
-	});
-	it("fails if not provided valid rules", () => {
-		expect(() => getLexer()).toThrow();
-		expect(() => getLexer([])).toThrow();
-		expect(() => getLexer([{}])).toThrow();
-		expect(() =>
-			getLexer([
-				{
-					name: "",
-					regex: "",
-					getValue: null
-				}
-			])
-		).toThrow();
-		expect(() =>
-			getLexer([
-				{
-					name: "name",
-					regex: "",
-					getValue: null
-				}
-			])
-		).toThrow();
-		expect(() =>
-			getLexer([
-				{
-					name: "name",
-					regex: "$unmatchable regex",
-					getValue: null
-				}
-			])
-		).toThrow();
-		expect(() =>
-			getLexer([
-				{
-					name: "name",
-					regex: "$unmatchable regex",
-					getValue: () => {}
-				}
-			])
-		).not.toThrow();
-	});
-	describe("returned function", () => {
-		const lex = getLexer([
-			{
-				name: "name",
-				regex: "$unmatchable regex",
-				getValue: () => {}
-			}
-		]);
-		it("can be called with no source", () => {
-			expect(lex()).toBeDefined();
-		});
-		it("returns an array", () => {
-			expect(lex()).toBeDefined();
-		});
-		it("converts anything not in the provided rules to a fill token with characters as value", () => {
-			expect(lex("a")).toEqual([
-				{
-					name: "fill",
-					value: "a"
-				}
-			]);
-			expect(lex("The quick brown fox jumps over the lazy dog")).toEqual([
-				{
-					name: "fill",
-					value: "The quick brown fox jumps over the lazy dog"
-				}
-			]);
-			expect(lex("1234567890")).toEqual([
-				{ name: "fill", value: "1234567890" }
-			]);
-			expect(lex("abcdefghijklmnopqrstuvwxyz")).toEqual([
-				{ name: "fill", value: "abcdefghijklmnopqrstuvwxyz" }
-			]);
-			expect(lex("ABCDEFGHIJKLMNOPQRSTUVWXYZ")).toEqual([
-				{ name: "fill", value: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" }
-			]);
-			expect(lex("<>[]``!@#$%^&*()_+")).toEqual([
-				{ name: "fill", value: "<>[]``!@#$%^&*()_+" }
-			]);
-		});
-	});
-});
-
-describe("mylang lexical ruleset", () => {
+describe("lexicon", () => {
 	it("is a valid ruleset for the lexer", () => {
-		expect(() => getLexer(myrules)).not.toThrow();
+		expect(() => getLexer(lexicon)).not.toThrow();
 	});
-	const lex = getLexer(myrules);
+	const lex = getLexer(lexicon);
 	it('converts `[[a|b]]` to an action token with value: `{text: "a", action: "b"}`', () => {
 		expect(lex("[[a|b]]")).toEqual([
 			{ name: "action", value: { text: "a", action: "b" } }
@@ -119,7 +20,7 @@ describe("mylang lexical ruleset", () => {
 	it("converts `<<endif>>` to an endif token without value", () => {
 		expect(lex("<<endif>>")).toEqual([{ name: "endif" }]);
 	});
-	it("converts `<<do a>>` to a do token with value: `\"a\"`", () => {
+	it('converts `<<do a>>` to a do token with value: `"a"`', () => {
 		expect(lex("<<do a>>")).toEqual([{ name: "do", value: "a" }]);
 	});
 	it("treats `[[]]` without anything inside as normal characters", () => {

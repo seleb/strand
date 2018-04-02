@@ -1,7 +1,7 @@
 export default [
 	{
 		name: "action",
-		regex: String.raw`\[\[(.+?)\]\]`,
+		regex: String.raw`\[\[([^]+?)\]\]`,
 		getValue: (match, content) => {
 			const [text, action] = content.split("|");
 			return {
@@ -12,12 +12,12 @@ export default [
 	},
 	{
 		name: "if",
-		regex: String.raw`<<\s*?if\s*?(.+?)\s*?>>`,
+		regex: String.raw`<<\s*?if\s*?([^]+?)\s*?>>`,
 		getValue: (match, condition) => condition.trim()
 	},
 	{
 		name: "elseif",
-		regex: String.raw`<<\s*?els?e?\s*?if\s*?(.+?)\s*?>>`,
+		regex: String.raw`<<\s*?els?e?\s*?if\s*?([^]+?)\s*?>>`,
 		getValue: (match, condition) => condition.trim()
 	},
 	{
@@ -33,13 +33,13 @@ export default [
 	},
 	{
 		name: "do",
-		regex: String.raw`<<\s*?do\s*?(.+?)\s*?>>\n?`,
+		regex: String.raw`<<\s*?do\s*?([^]+?)\s*?>>\n?`,
 		getValue: (match, statement) => statement.trim()
 	},
 	{
 		// set a=b -> do this.a=b
 		name: "do",
-		regex: String.raw`<<\s*?set\s*?(.+?)\s*?=(.+?)\s*?>>\n?`,
+		regex: String.raw`<<\s*?set\s*?([^]+?)\s*?=([^]+?)\s*?>>\n?`,
 		getValue: (match, identifier, value) =>
 			`this.${identifier.trim()}=${value.trim()}`
 	}
