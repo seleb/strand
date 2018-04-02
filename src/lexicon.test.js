@@ -29,6 +29,14 @@ describe("lexicon", () => {
 	it("treats `<<>>` without anything inside as normal characters", () => {
 		expect(lex("<<>>")).toEqual([{ name: "fill", value: "<<>>" }]);
 	});
+	it("respects newline after `<<>>` blocks", () => {
+		expect(lex("<<if a>>\ntext")).toEqual(lex("<<if a>>").concat(lex("\ntext")));
+		expect(lex("<<elseif a>>\ntext")).toEqual(lex("<<elseif a>>").concat(lex("\ntext")));
+		expect(lex("<<else>>\ntext")).toEqual(lex("<<else>>").concat(lex("\ntext")));
+		expect(lex("<<endif>>\ntext")).toEqual(lex("<<endif>>").concat(lex("\ntext")));
+		expect(lex("<<do a>>\ntext")).toEqual(lex("<<do a>>").concat(lex("\ntext")));
+		expect(lex("<<set a=b>>\ntext")).toEqual(lex("<<set a=b>>").concat(lex("\ntext")));
+	});
 	describe("sugar", () => {
 		it('treats `[[a]]` as sugar for `[[a|this.goto("a")]]`', () => {
 			expect(lex("[[test]]")).toEqual(lex('[[test|this.goto("test")]]'));

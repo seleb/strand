@@ -33,13 +33,13 @@ export default [
 	},
 	{
 		name: "do",
-		regex: String.raw`<<\s*?do\s*?([^]+?)\s*?>>\n?`,
+		regex: String.raw`<<\s*?do\s*?([^]+?)\s*?>>`,
 		getValue: (match, statement) => statement.trim()
 	},
 	{
 		// set a=b -> do this.a=b
 		name: "do",
-		regex: String.raw`<<\s*?set\s*?([^]+?)\s*?=([^]+?)\s*?>>\n?`,
+		regex: String.raw`<<\s*?set\s*?([^]+?)\s*?=([^]+?)\s*?>>`,
 		getValue: (match, identifier, value) =>
 			`this.${identifier.trim()}=${value.trim()}`
 	}
