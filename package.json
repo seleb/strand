@@ -12,6 +12,6 @@
 		"jest": "^22.4.3"
 	},
 	"scripts": {
-		"test": "jest"
+		"test": "jest --silent --coverage"
 	}
 }
