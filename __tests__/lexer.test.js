@@ -119,6 +119,9 @@ describe("mylang lexical ruleset", () => {
 	it("converts `<<endif>>` to an endif token without value", () => {
 		expect(lex("<<endif>>")).toEqual([{ name: "endif" }]);
 	});
+	it("converts `<<do a>>` to a do token with value: `\"a\"`", () => {
+		expect(lex("<<do a>>")).toEqual([{ name: "do", value: "a" }]);
+	});
 	it("treats `[[]]` without anything inside as normal characters", () => {
 		expect(lex("[[]]")).toEqual([{ name: "fill", value: "[[]]" }]);
 	});
@@ -131,6 +134,9 @@ describe("mylang lexical ruleset", () => {
 		});
 		it("treats `<<else>>` as sugar for <<elseif true>>", () => {
 			expect(lex("<<else>>")).toEqual(lex("<<elseif true>>"));
+		});
+		it("treats `<<set a=b>>` as sugar for `<<do this.a=b>>", () => {
+			expect(lex("<<set a=b>>")).toEqual(lex("<<do this.a=b>>"));
 		});
 		it("ignores whitespace between `<<`/`>>` and contents", () => {
 			expect(lex("<<if condition>>")).toEqual(

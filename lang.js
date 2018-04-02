@@ -29,5 +29,16 @@ export default [
 		name: "endif",
 		regex: String.raw`<<\s*?endif\s*?>>`,
 		getValue: () => {}
+	},
+	{
+		name: "do",
+		regex: String.raw`<<\s*?do\s*?(.+?)\s*?>>\n?`,
+		getValue: (match, statement) => statement.trim()
+	},
+	{
+		name: "do",
+		regex: String.raw`<<\s*?set\s*?(.+?)\s*?=(.+?)\s*?>>\n?`,
+		getValue: (match, identifier, value) =>
+			`this.${identifier.trim()}=${value.trim()}`
 	}
 ];
