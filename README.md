@@ -10,6 +10,7 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 - `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
 - `<<if JS>><<elseif JS>><<endif>>`: Evaluates `JS` inside the "if". If it evaluates to a truthy value, execution will continue along that branch and the rest will be ignored. If it evaluates to a falsey value, the same is repeated for each "elseif".
 - `<<else>>`: Shorthand for `<<elseif true>>`
+- `<<print JS>>`: Evaluates `JS` when the passage is executed, and creates a text node with the evaluated value
 - anything else: Creates a text node
 
 ### example
