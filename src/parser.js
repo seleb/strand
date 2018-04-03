@@ -40,6 +40,7 @@ export function parse(tokens) {
 				break;
 			case "action":
 			case "do":
+			case "print":
 				stack[stack.length - 1].push(token);
 				break;
 			case "fill": {

@@ -23,6 +23,9 @@ describe("lexicon", () => {
 	it('converts `<<do a>>` to a do token with value: `"a"`', () => {
 		expect(lex("<<do a>>")).toEqual([{ name: "do", value: "a" }]);
 	});
+	it('converts `<<print a>>` to a print token with value: `"a"`', () => {
+		expect(lex("<<print a>>")).toEqual([{ name: "print", value: "a" }]);
+	});
 	it("treats `[[]]` without anything inside as normal characters", () => {
 		expect(lex("[[]]")).toEqual([{ name: "fill", value: "[[]]" }]);
 	});

@@ -42,5 +42,10 @@ export default [
 		regex: String.raw`<<\s*?set\s*?([^]+?)\s*?=([^]+?)\s*?>>`,
 		getValue: (match, identifier, value) =>
 			`this.${identifier.trim()}=${value.trim()}`
+	},
+	{
+		name: "print",
+		regex: String.raw`<<\s*?print\s*?([^]+?)\s*?>>`,
+		getValue: (match, statement) => statement.trim()
 	}
 ];

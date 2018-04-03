@@ -171,6 +171,12 @@ export default class {
 				case "do":
 					this.eval(node.value);
 					break;
+				case "print":
+					nodes.push({
+						name:"text",
+						value: this.eval(node.value)
+					});
+					break;
 				default:
 					nodes.push(node);
 			}
