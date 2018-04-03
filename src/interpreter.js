@@ -163,7 +163,7 @@ export default class {
 				case "condition":
 					for (let branch of node.value) {
 						if (this.eval(branch.condition)) {
-							nodes.concat(this.execute(branch.branch));
+							nodes = nodes.concat(this.execute(branch.branch));
 							break;
 						}
 					}
