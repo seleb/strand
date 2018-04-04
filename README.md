@@ -1,3 +1,4 @@
+![strand icon](./strandIcon.png)
 # strand
 Basic narrative scripting + interpreter inspired by Twine
 
