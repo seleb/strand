@@ -15,6 +15,8 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 
 [VSCode extension](https://marketplace.visualstudio.com/items?itemName=seansleblanc.strand-vscode)
 
+[Example renderer](https://github.com/seleb/strand-htmlrenderer)
+
 ### example
 ```
 ::start
