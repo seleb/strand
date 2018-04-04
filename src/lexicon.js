@@ -1,5 +1,10 @@
 export default [
 	{
+		name: "comment",
+		regex: String.raw`//(.*)$`,
+		getValue: (match, comment) => comment
+	},
+	{
 		name: "action",
 		regex: String.raw`\[\[([^]+?)\]\]`,
 		getValue: (match, content) => {

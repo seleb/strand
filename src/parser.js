@@ -52,6 +52,8 @@ export function parse(tokens) {
 				stack[stack.length - 1].push(n);
 				break;
 			}
+			case "comment":
+				break;
 			default:
 				throw new Error(`Unrecognized token name: ${token.name}`);
 		}
