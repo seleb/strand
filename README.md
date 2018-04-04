@@ -13,6 +13,8 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 - `<<print JS>>`: Evaluates `JS` when the passage is executed, and creates a text node with the evaluated value
 - anything else: Creates a text node
 
+[VSCode extension](https://marketplace.visualstudio.com/items?itemName=seansleblanc.strand-vscode)
+
 ### example
 ```
 ::start
