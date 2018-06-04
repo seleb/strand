@@ -1,0 +1,10 @@
+src
+.test.*
+coverage
+.babelrc
+.eslintrc
+rollup.config.js
+.gitattributes
+strand-core*.tgz
+strandIcon.png
+strandIcon.svg

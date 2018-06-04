@@ -1,5 +1,5 @@
 import main from "./main";
-import Interpreter from "./src/interpreter";
+import Interpreter from "./interpreter";
 
 describe("main", () => {
 	it("exports the interpreter class", () => {

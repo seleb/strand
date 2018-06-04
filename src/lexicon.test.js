@@ -1,4 +1,4 @@
-import { getLexer } from "lexer";
+import { getLexer } from "lil-lexer";
 import lexicon from "./lexicon";
 
 describe("lexicon", () => {
