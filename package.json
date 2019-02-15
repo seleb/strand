@@ -8,7 +8,7 @@
 	"author": "Sean S. LeBlanc <sean.s.leblanc@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
-		"lil-lexer": "^1.0.0"
+		"lil-lexer": "^1.0.2"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.3",
