@@ -26,6 +26,9 @@ describe("lexicon", () => {
 	it('converts `<<print a>>` to a print token with value: `"a"`', () => {
 		expect(lex("<<print a>>")).toEqual([{ name: "print", value: "a" }]);
 	});
+	it('converts `// a` to a comment token with value: `"a"`', () => {
+		expect(lex("// a")).toEqual([{ name: "comment", value: "a" }]);
+	});
 	it("treats `[[]]` without anything inside as normal characters", () => {
 		expect(lex("[[]]")).toEqual([{ name: "fill", value: "[[]]" }]);
 	});
@@ -130,7 +133,8 @@ describe("lexicon", () => {
 		const source = `
 		
 This passage begins with a bunch of whitespace
-	It also has tabs
+	It also has tabs // and comments
+// some at the start of a line
 	it's got [[links]]
 	<<if conditions>>
 [[also|actions]]
@@ -155,8 +159,17 @@ it ends with some whitespace too
 			{
 				name: "fill",
 				value:
-					"\n\t\t\nThis passage begins with a bunch of whitespace\n\tIt also has tabs\n\tit's got "
+					"\n\t\t\nThis passage begins with a bunch of whitespace\n\tIt also has tabs "
 			},
+			{
+				name: 'comment',
+				value: 'and comments'
+			},
+			{
+				name: 'comment',
+				value: 'some at the start of a line'
+			},
+			{ name: "fill", value: "\tit's got " },
 			{
 				name: "action",
 				value: { text: "links", action: 'this.goto("links")' }
@@ -174,7 +187,7 @@ it ends with some whitespace too
 					"another nested condition with [[link]] syntax inside it!"
 			},
 			{ name: "fill", value: "\n\t\tthat's a bit weird\n\t" },
-			{ name: "endif" },
+			{ name: "endif", value: undefined },
 			{
 				name: "fill",
 				value: "\n\tbut it should cover most real-world cases\n\t\t"
@@ -185,11 +198,11 @@ it ends with some whitespace too
 				value:
 					"\n\t\tI'm sure we'll find a way to break it though\n\t\t"
 			},
-			{ name: "endif" },
+			{ name: "endif", value: undefined },
 			{ name: "fill", value: "\n\t" },
 			{ name: "elseif", value: "[[bad|action]]" },
 			{ name: "fill", value: " " },
-			{ name: "endif" },
+			{ name: "endif", value: undefined },
 			{ name: "fill", value: "\nit ends with some whitespace too\n\t\n" }
 		]);
 	});

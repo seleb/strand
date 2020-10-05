@@ -1,8 +1,8 @@
 export default [
 	{
 		name: "comment",
-		regex: String.raw`//(.*)$`,
-		getValue: (match, comment) => comment
+		regex: String.raw`\/\/(.*)\n?`,
+		getValue: (match, comment) => comment.trim()
 	},
 	{
 		name: "action",
