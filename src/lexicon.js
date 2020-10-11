@@ -11,7 +11,7 @@ export default [
 			const [text, action] = content.split("|");
 			return {
 				text,
-				action: action || `this.goto("${text}")`
+				action: action || `this.goto("${text.replace(/"/g,'\\"')}")`
 			};
 		}
 	},
