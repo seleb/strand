@@ -1,6 +1,6 @@
 {
 	"name": "strand-core",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Basic narrative engine core inspired by Twine",
 	"main": "./dist/main.js",
 	"module": "./dist/bundle.js",
