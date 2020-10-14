@@ -162,14 +162,27 @@ export default class {
 			switch (node.name) {
 				case "condition":
 					for (let branch of node.value) {
-						if (this.eval(branch.condition)) {
+						let result;
+						try {
+							result = this.eval(branch.condition);
+						} catch (err) {
+							console.error("Failed to evaluate condition", branch, err);
+							nodes.push({ name: "text", value: `Failed to evaluate condition:\n${branch.condition}\n${err.message}` });
+							continue;
+						}
+						if (result) {
 							nodes = nodes.concat(this.execute(branch.branch));
 							break;
 						}
 					}
 					break;
 				case "do":
-					this.eval(node.value);
+					try {
+						this.eval(node.value);
+					} catch (err) {
+						console.error("Failed to evaluate node", node, err);
+						nodes.push({ name: "text", value: `Failed to evaluate node:\n${node.value}\n${err.message}` });
+					}
 					break;
 				case "print":
 					nodes.push({
