@@ -4,6 +4,7 @@
 	"description": "Basic narrative engine core inspired by Twine",
 	"main": "./dist/main.js",
 	"module": "./dist/bundle.js",
+	"types": "./strand-core.d.ts",
 	"repository": "github:seleb/strand",
 	"author": "Sean S. LeBlanc <sean.s.leblanc@gmail.com>",
 	"license": "MIT",
