@@ -1,10 +1,18 @@
-![strand icon](./strandIcon.png)
 # strand
+
+![strand icon](./strandIcon.png)
+
 Basic narrative scripting + interpreter inspired by Twine
 
+```sh
+npm i strand-core
+```
+
 ## language
+
 note: anywhere `JS` appears here, it is embedded javascript to be evaluated in the context of the interpreter instance.
-- `::string`: Marks the beginning of a passage with the title `string`. Between this line and the next passage title/EOF will be the body of the passage. 
+
+- `::string`: Marks the beginning of a passage with the title `string`. Between this line and the next passage title/EOF will be the body of the passage.
 - `[[string|JS]]`: Creates an action node with the text `string` and action `JS`. Expected use for this is to create buttons, links, etc and have the renderer tell the interpreter to evaluate the action on click
 - `[[link]]`: Shorthand for `[[link|this.goto("link")]]`
 - `<<do JS>>`: Evaluates `JS` when the passage is executed
@@ -19,6 +27,7 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 [Example renderer](https://github.com/seleb/strand-htmlrenderer)
 
 ### example
+
 ```
 ::start
 some text with a [[shorthand link]] and a longform [[action|this.goto("other passage")]]
