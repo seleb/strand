@@ -26,6 +26,7 @@ declare module 'strand-core' {
 	export default class Strand<T = void> {
 		busy: boolean;
 		history: string[];
+		passages: Omit<Passage, 'program'>;
 		renderer: Renderer<T>;
 		constructor(options: { renderer: Renderer<T>; source: string });
 
