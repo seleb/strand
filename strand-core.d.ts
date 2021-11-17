@@ -27,6 +27,7 @@ declare module 'strand-core' {
 		busy: boolean;
 		history: string[];
 		passages: { [key: string]: Omit<Passage, 'program'> };
+		currentPassage: Passage;
 		renderer: Renderer<T>;
 		constructor(options: { renderer: Renderer<T>; source: string });
 
