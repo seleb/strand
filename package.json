@@ -23,7 +23,7 @@
 	"scripts": {
 		"test": "jest --silent --coverage",
 		"build": "rollup -c --bundleConfigAsCjs",
-		"prepare": "npm run build"
+		"postversion": "npm run build"
 	},
 	"release": {
 		"branches": [
