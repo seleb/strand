@@ -1,10 +1,10 @@
-import { parsePassages, compilePassage } from "./passages";
+import { compilePassage, parsePassages } from "./passages";
 
 const defaultTitle = "DEFAULT";
 export const defaultPassage = {
 	title: defaultTitle,
 	body:
-		"This shows up when a passage failed to parse, or doesn't even exist. Try checking the link for spelling errors or the console logs for more detail on the error.\n[[back|this.back();]]"
+		"This shows up when a passage failed to parse, or doesn't even exist. Try checking the link for spelling errors or the logs for more detail on the error.\n[[back|this.back();]]"
 };
 
 export default class {
@@ -12,8 +12,9 @@ export default class {
 	 * @param {Object} args
 	 * @param {Object} args.renderer Renderer to be controlled by this Runner. The only requirement for a renderer is that it defines `displayPassage`, which accepts a parsed passage and returns a Promise
 	 * @param {string?} args.source `this.setSource` is called with `source` as a parameter
+	 * @param {Object?} args.logger optional replacement for console logger
 	 */
-	constructor({ renderer, source }) {
+	constructor({ renderer, source, logger = console }) {
 		if (typeof renderer.displayPassage !== "function") {
 			throw new Error(
 				"renderer must have a `displayPassage` function which accepts a parsed passage and returns a Promise"
@@ -25,6 +26,7 @@ export default class {
 		this.busy = false;
 
 		this.renderer = renderer;
+		this.logger = logger;
 		this.setSource(source);
 	}
 	/**
@@ -35,7 +37,7 @@ export default class {
 	 * @returns {any} Evaluation of script
 	 */
 	eval(script = "") {
-		console.log("Running script:", script);
+		this.logger.log("Running script:", script);
 		return this._evalInScope(script);
 	}
 
@@ -72,7 +74,7 @@ export default class {
 			}
 			return compilePassage(this.passages[title]);
 		} catch (err) {
-			console.error(
+			this.logger.error(
 				`Failed to parse passage titled "${title}", going to "${defaultTitle}" instead. Original error:`,
 				err
 			);
@@ -87,7 +89,7 @@ export default class {
 	 * @returns {Promise} resolves when transition in to new passage has completed.
 	 */
 	goto(title) {
-		console.log("Going to passage:", title);
+		this.logger.log("Going to passage:", title);
 		return Promise.resolve()
 			.then(() => this.getPassageWithTitle(title))
 			.then(passage => this.displayPassage(passage));
@@ -98,7 +100,7 @@ export default class {
 	 * @returns {Promise} resolves with title of new currentPassage when goto is complete. If no history is available, rejects with an error
 	 */
 	back() {
-		console.log("back");
+		this.logger.log("back");
 		if (this.history.length === 0) {
 			return Promise.reject(
 				new Error(
@@ -135,12 +137,12 @@ export default class {
 				"Busy waiting for previous passage to display; cannot display another"
 			);
 		}
-		console.log("Displaying passage:", passage);
+		this.logger.log("Displaying passage:", passage);
 		// push current state to history
 		if (this.currentPassage) {
 			this.history.push(this.currentPassage.title);
 		} else {
-			console.warn(
+			this.logger.warn(
 				"No history pushed because there is no current passage"
 			);
 		}
@@ -166,7 +168,7 @@ export default class {
 						try {
 							result = this.eval(branch.condition);
 						} catch (err) {
-							console.error("Failed to evaluate condition", branch, err);
+							this.logger.error("Failed to evaluate condition", branch, err);
 							nodes.push({ name: "text", value: `Failed to evaluate condition:\n${branch.condition}\n${err.message}` });
 							continue;
 						}
@@ -180,7 +182,7 @@ export default class {
 					try {
 						this.eval(node.value);
 					} catch (err) {
-						console.error("Failed to evaluate node", node, err);
+						this.logger.error("Failed to evaluate node", node, err);
 						nodes.push({ name: "text", value: `Failed to evaluate node:\n${node.value}\n${err.message}` });
 					}
 					break;
