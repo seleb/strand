@@ -386,17 +386,20 @@ function compilePassage(passage) {
 var defaultTitle = "DEFAULT";
 var defaultPassage = {
   title: defaultTitle,
-  body: "This shows up when a passage failed to parse, or doesn't even exist. Try checking the link for spelling errors or the console logs for more detail on the error.\n[[back|this.back();]]"
+  body: "This shows up when a passage failed to parse, or doesn't even exist. Try checking the link for spelling errors or the logs for more detail on the error.\n[[back|this.back();]]"
 };
 var _default = /*#__PURE__*/function () {
   /**
    * @param {Object} args
    * @param {Object} args.renderer Renderer to be controlled by this Runner. The only requirement for a renderer is that it defines `displayPassage`, which accepts a parsed passage and returns a Promise
    * @param {string?} args.source `this.setSource` is called with `source` as a parameter
+   * @param {Object?} args.logger optional replacement for console logger
    */
   function _default(_ref) {
     var renderer = _ref.renderer,
-      source = _ref.source;
+      source = _ref.source,
+      _ref$logger = _ref.logger,
+      logger = _ref$logger === void 0 ? console : _ref$logger;
     _classCallCheck(this, _default);
     if (typeof renderer.displayPassage !== "function") {
       throw new Error("renderer must have a `displayPassage` function which accepts a parsed passage and returns a Promise");
@@ -408,6 +411,7 @@ var _default = /*#__PURE__*/function () {
     }.bind(this);
     this.busy = false;
     this.renderer = renderer;
+    this.logger = logger;
     this.setSource(source);
   }
   /**
@@ -421,7 +425,7 @@ var _default = /*#__PURE__*/function () {
     key: "eval",
     value: function _eval() {
       var script = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-      console.log("Running script:", script);
+      this.logger.log("Running script:", script);
       return this._evalInScope(script);
     }
 
@@ -461,7 +465,7 @@ var _default = /*#__PURE__*/function () {
         }
         return compilePassage(this.passages[title]);
       } catch (err) {
-        console.error("Failed to parse passage titled \"".concat(title, "\", going to \"").concat(defaultTitle, "\" instead. Original error:"), err);
+        this.logger.error("Failed to parse passage titled \"".concat(title, "\", going to \"").concat(defaultTitle, "\" instead. Original error:"), err);
         return compilePassage(this.passages[defaultTitle]);
       }
     }
@@ -476,7 +480,7 @@ var _default = /*#__PURE__*/function () {
     key: "goto",
     value: function goto(title) {
       var _this = this;
-      console.log("Going to passage:", title);
+      this.logger.log("Going to passage:", title);
       return Promise.resolve().then(function () {
         return _this.getPassageWithTitle(title);
       }).then(function (passage) {
@@ -492,7 +496,7 @@ var _default = /*#__PURE__*/function () {
     key: "back",
     value: function back() {
       var _this2 = this;
-      console.log("back");
+      this.logger.log("back");
       if (this.history.length === 0) {
         return Promise.reject(new Error("Cannot go back because there is no history available."));
       }
@@ -526,12 +530,12 @@ var _default = /*#__PURE__*/function () {
       if (this.busy) {
         throw new Error("Busy waiting for previous passage to display; cannot display another");
       }
-      console.log("Displaying passage:", passage);
+      this.logger.log("Displaying passage:", passage);
       // push current state to history
       if (this.currentPassage) {
         this.history.push(this.currentPassage.title);
       } else {
-        console.warn("No history pushed because there is no current passage");
+        this.logger.warn("No history pushed because there is no current passage");
       }
       this.currentPassage = passage;
       this.busy = true;
@@ -562,7 +566,7 @@ var _default = /*#__PURE__*/function () {
                 try {
                   result = _this4.eval(branch.condition);
                 } catch (err) {
-                  console.error("Failed to evaluate condition", branch, err);
+                  _this4.logger.error("Failed to evaluate condition", branch, err);
                   nodes.push({
                     name: "text",
                     value: "Failed to evaluate condition:\n".concat(branch.condition, "\n").concat(err.message)
@@ -584,7 +588,7 @@ var _default = /*#__PURE__*/function () {
             try {
               _this4.eval(node.value);
             } catch (err) {
-              console.error("Failed to evaluate node", node, err);
+              _this4.logger.error("Failed to evaluate node", node, err);
               nodes.push({
                 name: "text",
                 value: "Failed to evaluate node:\n".concat(node.value, "\n").concat(err.message)

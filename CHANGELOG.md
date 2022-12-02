@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/seleb/strand/compare/v1.1.1...v1.2.0) (2022-12-02)
+
+
+### Features
+
+* add optional `logger` parameter ([8d30f01](https://github.com/seleb/strand/commit/8d30f01fdf33ab32392c4efd26e52b01a0bd8d37))
+
 ## [1.1.1](https://github.com/seleb/strand/compare/v1.1.0...v1.1.1) (2022-12-02)
 
 
