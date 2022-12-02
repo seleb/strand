@@ -12,17 +12,17 @@
 		"lil-lexer": "^1.0.3"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.11.6",
-		"@babel/plugin-proposal-object-rest-spread": "^7.11.0",
-		"@babel/preset-env": "^7.11.5",
+		"@babel/core": "^7.20.5",
+		"@babel/plugin-proposal-object-rest-spread": "^7.20.2",
+		"@babel/preset-env": "^7.20.2",
+		"@rollup/plugin-babel": "^6.0.3",
+		"@rollup/plugin-commonjs": "^23.0.3",
 		"jest": "^24.9.0",
-		"rollup": "^0.59.4",
-		"rollup-plugin-babel": "^4.4.0",
-		"rollup-plugin-commonjs": "^9.3.4"
+		"rollup": "^3.5.1"
 	},
 	"scripts": {
 		"test": "jest --silent --coverage",
-		"build": "rollup -c",
+		"build": "rollup -c --bundleConfigAsCjs",
 		"prepare": "npm run build"
 	},
 	"release": {
