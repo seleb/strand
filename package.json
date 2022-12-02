@@ -18,12 +18,16 @@
 		"@rollup/plugin-babel": "^6.0.3",
 		"@rollup/plugin-commonjs": "^23.0.3",
 		"jest": "^29.3.1",
+		"jest-environment-jsdom": "^29.3.1",
 		"rollup": "^3.5.1"
 	},
 	"scripts": {
 		"test": "jest --silent --coverage",
 		"build": "rollup -c --bundleConfigAsCjs",
 		"postversion": "npm run build"
+	},
+	"jest": {
+		"testEnvironment": "jsdom"
 	},
 	"release": {
 		"branches": [
