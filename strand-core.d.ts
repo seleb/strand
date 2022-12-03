@@ -29,7 +29,7 @@ declare module 'strand-core' {
 		passages: { [key: string]: Omit<Passage, 'program'> };
 		currentPassage: Passage;
 		renderer: Renderer<T>;
-		constructor(options: { renderer: Renderer<T>; source: string, logger: Pick<Console, 'log' | 'warn' | 'error'> });
+		constructor(options: { renderer: Renderer<T>; source: string, logger?: Pick<Console, 'log' | 'warn' | 'error'> });
 
 		eval(source: string): unknown;
 		setSource(source: string): void;
