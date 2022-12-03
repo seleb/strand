@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/seleb/strand/compare/v1.2.0...v1.2.1) (2022-12-03)
+
+
+### Bug Fixes
+
+* make logger optional in constructor parameter types ([1460ed5](https://github.com/seleb/strand/commit/1460ed5ab0e34ff8ec981fef2035131c19b1b9e8))
+
 # [1.2.0](https://github.com/seleb/strand/compare/v1.1.1...v1.2.0) (2022-12-02)
 
 
