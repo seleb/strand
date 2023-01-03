@@ -47,6 +47,9 @@ describe("lexicon", () => {
 		it('treats `[[a]]` as sugar for `[[a|this.goto("a")]]`', () => {
 			expect(lex("[[test]]")).toEqual(lex('[[test|this.goto("test")]]'));
 		});
+		it('treats `[[a>b]]` as sugar for `[[a|this.goto("b")]]`', () => {
+			expect(lex("[[a>b]]")).toEqual(lex('[[a|this.goto("b")]]'));
+		});
 		it("treats `<<else>>` as sugar for <<elseif true>>", () => {
 			expect(lex("<<else>>")).toEqual(lex("<<elseif true>>"));
 		});
