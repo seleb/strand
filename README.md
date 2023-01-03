@@ -14,14 +14,17 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 
 - `::string`: Marks the beginning of a passage with the title `string`. Between this line and the next passage title/EOF will be the body of the passage.
 - `[[string|JS]]`: Creates an action node with the text `string` and action `JS`. Expected use for this is to create buttons, links, etc and have the renderer tell the interpreter to evaluate the action on click
-- `[[link>target]]`: Shorthand for `[[link|this.goto("target")]]`
-- `[[link]]`: Shorthand for `[[link|this.goto("link")]]`
 - `<<do JS>>`: Evaluates `JS` when the passage is executed
-- `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
 - `<<if JS>><<elseif JS>><<endif>>`: Evaluates `JS` inside the "if". If it evaluates to a truthy value, execution will continue along that branch and the rest will be ignored. If it evaluates to a falsey value, the same is repeated for each "elseif".
-- `<<else>>`: Shorthand for `<<elseif true>>`
 - `<<print JS>>`: Evaluates `JS` when the passage is executed, and creates a text node with the evaluated value
 - anything else: Creates a text node
+
+### shorthands
+
+- `[[link]]`: Shorthand for `[[link|this.goto("link")]]`
+- `[[link>target]]`: Shorthand for `[[link|this.goto("target")]]`
+- `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
+- `<<else>>`: Shorthand for `<<elseif true>>`
 
 [VSCode extension](https://marketplace.visualstudio.com/items?itemName=seansleblanc.strand-vscode)
 
