@@ -41,7 +41,11 @@ a
 >
 b
 >c|d|e
+<<if true>>
 f
+<<
+endif
+>>
 `)).toEqual(parsePassages(`
 ::start
 a
@@ -52,7 +56,11 @@ b
 [[d|this.goto('auto-2')]]
 [[e|this.goto('auto-2')]]
 ::auto-2
+<<if true>>
 f
+<<
+endif
+>>
 `));
 	});
 	it('treats `\\>` as an escape for `>`', () => {
