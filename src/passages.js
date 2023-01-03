@@ -7,7 +7,7 @@ import { compile } from "./compiler";
  */
 export function parsePassages(source) {
 	// sanitize: remove unneeded \r characters and any leading/trailing space
-	source = source.replace(/[\r]/g, "").trim();
+	source = source.replace(/[\r]/g, '').trim();
 
 	// auto link sugar: `>` and `>text`
 	let autolink = 0;
@@ -38,13 +38,11 @@ export function parsePassages(source) {
 
 	// remove the first element, which is a body segment without a title
 	if (segments.shift().length > 0) {
-		console.warn(
-			"Found text above first passage title; this text will be ignored"
-		);
+		console.warn('Found text above first passage title; this text will be ignored');
 	}
 
 	if (segments.length === 0) {
-		throw new Error("No passages found");
+		throw new Error('No passages found');
 	}
 
 	// map passage bodies to titles
@@ -60,7 +58,7 @@ export function parsePassages(source) {
 		}
 		passages[title] = {
 			title,
-			body
+			body,
 		};
 	}
 	return passages;
