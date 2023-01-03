@@ -52,5 +52,5 @@ export default [
 		name: "print",
 		regex: String.raw`<<\s*?print\s*?([^]+?)\s*?>>`,
 		getValue: (match, statement) => statement.trim()
-	}
+	},
 ];
