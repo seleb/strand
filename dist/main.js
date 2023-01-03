@@ -271,6 +271,15 @@ var lexicon = [{
       _content$split2 = _slicedToArray(_content$split, 2),
       text = _content$split2[0],
       action = _content$split2[1];
+    if (!action) {
+      var _text$split = text.split('>');
+      var _text$split2 = _slicedToArray(_text$split, 2);
+      text = _text$split2[0];
+      action = _text$split2[1];
+      if (action) {
+        action = "this.goto(\"".concat(action.replace(/"/g, '\\"'), "\")");
+      }
+    }
     return {
       text: text,
       action: action || "this.goto(\"".concat(text.replace(/"/g, '\\"'), "\")")
@@ -332,7 +341,19 @@ function compile(source) {
  */
 function parsePassages(source) {
   // sanitize: remove unneeded \r characters and any leading/trailing space
-  source = source.replace(/[\r]/g, "").trim();
+  source = source.replace(/[\r]/g, '').trim();
+
+  // auto link sugar: `>`, `>text`, and `>a|b|c`
+  var autolink = 0;
+  source = source.replace(/^>(.*)/gm, /* eslint-disable indent */
+  function (_, link) {
+    return link.split('|').map(function (l) {
+      return "[[".concat(l, "|this.goto('auto-").concat(autolink + 1, "')]]");
+    }).concat("\n::auto-".concat(++autolink)).join('\n');
+  }
+  /* eslint-enable indent */)
+  // auto link escape
+  .replace(/^\\>/gm, '>');
 
   // split passages
   // input:
@@ -344,10 +365,10 @@ function parsePassages(source) {
 
   // remove the first element, which is a body segment without a title
   if (segments.shift().length > 0) {
-    console.warn("Found text above first passage title; this text will be ignored");
+    console.warn('Found text above first passage title; this text will be ignored');
   }
   if (segments.length === 0) {
-    throw new Error("No passages found");
+    throw new Error('No passages found');
   }
 
   // map passage bodies to titles

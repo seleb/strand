@@ -1,3 +1,23 @@
+# [2.0.0](https://github.com/seleb/strand/compare/v1.2.1...v2.0.0) (2023-01-03)
+
+
+### Bug Fixes
+
+* **deps:** update `json5` ([96882a1](https://github.com/seleb/strand/commit/96882a1fbdb8cb74a2c2e7b7187214a945b6aff3))
+* **deps:** update babel + rollup ([cc2748f](https://github.com/seleb/strand/commit/cc2748fc31db71c25d41c4f5f5f916de321d71d2))
+
+
+### Features
+
+* add automatic link sugar `>` and `>text` ([f4cd51a](https://github.com/seleb/strand/commit/f4cd51ac7a5a1be898ae5e5cc3d57e423256b01f))
+* support `[[link>target]]` sugar ([12d32d6](https://github.com/seleb/strand/commit/12d32d6ba20b1c732eb4fbe63015b84fc3187971))
+
+
+### BREAKING CHANGES
+
+* The new automatic link sugar `>` and `>text` mean that any lines of plain text which started with `>` will now be treated as an autolink. To fix these cases, the character can be escaped with `\>`.
+* Actions now support a shorthand for writing links that redirect to a passage that doesn't match their text, e.g. `[[some text>some target]]`. This will break any shorthand links that happened to use the `>` character for display, e.g. `[[continue -->]]`. To fix cases like this, you can rewrite the passage in the longer form, e.g. `[[continue -->|this.goto('continue -->')]]`
+
 ## [1.2.1](https://github.com/seleb/strand/compare/v1.2.0...v1.2.1) (2022-12-03)
 
 
