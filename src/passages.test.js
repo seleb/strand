@@ -1,4 +1,4 @@
-import { parsePassages, compilePassage } from "./passages";
+import { compilePassage, parsePassages } from "./passages";
 
 describe("parsePassages", () => {
 	it("is a function", () => {
@@ -33,6 +33,30 @@ describe("parsePassages", () => {
 				body: "body"
 			}
 		});
+	});
+	it('treats `>` and `>text` as passage break sugar', () => {
+		expect(parsePassages(`
+::start
+a
+>
+b
+>c|d|e
+f
+`)).toEqual(parsePassages(`
+::start
+a
+[[|this.goto('auto-1')]]
+::auto-1
+b
+[[c|this.goto('auto-2')]]
+[[d|this.goto('auto-2')]]
+[[e|this.goto('auto-2')]]
+::auto-2
+f
+`));
+	});
+	it('treats `\\>` as an escape for `>`', () => {
+		expect(parsePassages('::start\n\\>')).toEqual({ start: { title: 'start', body: '>' } });
 	});
 	it("ignores text above first passage title", () => {
 		expect(
