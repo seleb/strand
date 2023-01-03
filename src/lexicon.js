@@ -8,7 +8,13 @@ export default [
 		name: "action",
 		regex: String.raw`\[\[([^]+?)\]\]`,
 		getValue: (match, content) => {
-			const [text, action] = content.split("|");
+			let [text, action] = content.split("|");
+			if (!action) {
+				[text, action] = text.split('>');
+				if (action) {
+					action = `this.goto("${action.replace(/"/g,'\\"')}")`;
+				}
+			}
 			return {
 				text,
 				action: action || `this.goto("${text.replace(/"/g,'\\"')}")`

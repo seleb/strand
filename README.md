@@ -14,6 +14,7 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 
 - `::string`: Marks the beginning of a passage with the title `string`. Between this line and the next passage title/EOF will be the body of the passage.
 - `[[string|JS]]`: Creates an action node with the text `string` and action `JS`. Expected use for this is to create buttons, links, etc and have the renderer tell the interpreter to evaluate the action on click
+- `[[link>target]]`: Shorthand for `[[link|this.goto("target")]]`
 - `[[link]]`: Shorthand for `[[link|this.goto("link")]]`
 - `<<do JS>>`: Evaluates `JS` when the passage is executed
 - `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
