@@ -23,6 +23,7 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 
 - `[[link]]`: Shorthand for `[[link|this.goto("link")]]`
 - `[[link>target]]`: Shorthand for `[[link|this.goto("target")]]`
+- `>` or `>string`: Shorthand for a "passage break", i.e. adds a link with the text `string` and an automatically generated passage heading. Expected use for this is breaking up long passages into multiple purely linear interactions without needing to mark up each one individually
 - `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
 - `<<else>>`: Shorthand for `<<elseif true>>`
 
