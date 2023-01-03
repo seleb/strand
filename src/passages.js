@@ -9,7 +9,7 @@ export function parsePassages(source) {
 	// sanitize: remove unneeded \r characters and any leading/trailing space
 	source = source.replace(/[\r]/g, '').trim();
 
-	// auto link sugar: `>` and `>text`
+	// auto link sugar: `>`, `>text`, and `>a|b|c`
 	let autolink = 0;
 	source = source
 		.replace(
