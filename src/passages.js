@@ -16,11 +16,13 @@ export function parsePassages(source) {
 			/^>(.*)/gm,
 			/* eslint-disable indent */
 			(_, link) =>
-				link
-					.split('|')
-					.map(l => `[[${l}|this.goto('auto-${autolink + 1}')]]`)
-					.concat(`\n::auto-${++autolink}`)
-					.join('\n')
+				link === '>'
+					? `>${link}`
+					: link
+							.split('|')
+							.map(l => `[[${l}|this.goto('auto-${autolink + 1}')]]`)
+							.concat(`\n::auto-${++autolink}`)
+							.join('\n')
 			/* eslint-enable indent */
 		)
 		// auto link escape
