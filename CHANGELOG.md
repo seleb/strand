@@ -1,3 +1,15 @@
+## [2.0.1](https://github.com/seleb/strand/compare/v2.0.0...v2.0.1) (2023-01-03)
+
+
+### Bug Fixes
+
+* autolink sugar interfering with if blocks ([c95e9a4](https://github.com/seleb/strand/commit/c95e9a4c1108f1a558466dd07dcdcde0865cbc2f))
+
+
+### Reverts
+
+* Revert "chore: remove unnecessary branch" ([f5e5226](https://github.com/seleb/strand/commit/f5e5226bfb7310011b3ebdf2ce0462c5f79af7e3))
+
 # [2.0.0](https://github.com/seleb/strand/compare/v1.2.1...v2.0.0) (2023-01-03)
 
 

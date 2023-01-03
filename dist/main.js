@@ -347,7 +347,7 @@ function parsePassages(source) {
   var autolink = 0;
   source = source.replace(/^>(.*)/gm, /* eslint-disable indent */
   function (_, link) {
-    return link.split('|').map(function (l) {
+    return link === '>' ? ">".concat(link) : link.split('|').map(function (l) {
       return "[[".concat(l, "|this.goto('auto-").concat(autolink + 1, "')]]");
     }).concat("\n::auto-".concat(++autolink)).join('\n');
   }
