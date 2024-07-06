@@ -296,33 +296,5 @@ describe("Interpreter", () => {
 				expect(mockDisplayPassage.mock.calls.length).toBe(1);
 			});
 		});
-		it("flags interpreter as busy until promise resolves", done => {
-			expect.assertions(3);
-			let resolveDisplayPassage;
-			const r = new Interpreter({
-				renderer: {
-					displayPassage: () =>
-						new Promise(resolve => {
-							resolveDisplayPassage = resolve;
-						})
-				}
-			});
-			const p = r.getPassageWithTitle();
-			r.displayPassage(p);
-			expect(r.busy).toBe(true);
-			setTimeout(() => {
-				expect(r.busy).toBe(true);
-				resolveDisplayPassage();
-				setTimeout(() => {
-					expect(r.busy).toBe(false);
-					done();
-				}, -1);
-			}, 50);
-		});
-		it("fails if called while interpreter is busy", () => {
-			const r = new Interpreter({ renderer });
-			r.busy = true;
-			expect(() => r.displayPassage(r.getPassageWithTitle())).toThrow();
-		});
 	});
 });

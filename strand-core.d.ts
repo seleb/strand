@@ -24,7 +24,6 @@ declare module 'strand-core' {
 		displayPassage(passage: Passage): Promise<T>;
 	}
 	export default class Strand<T = void> {
-		busy: boolean;
 		history: string[];
 		passages: { [key: string]: Omit<Passage, 'program'> };
 		currentPassage: Passage;

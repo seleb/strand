@@ -23,7 +23,6 @@ export default class {
 		this.history = [];
 		this.currentPassage = null;
 		this._evalInScope = (script => eval(script)).bind(this);
-		this.busy = false;
 
 		this.renderer = renderer;
 		this.logger = logger;
@@ -125,18 +124,10 @@ export default class {
 	 * The renderer can execute the program by calling `runner.execute(passage.program)`,
 	 * which will evaluate it and return the resulting list of nodes.
 	 *
-	 * Runner will be flagged as `busy` until renderer has finished.
-	 * Calling `displayPassage` while busy will throw an error.
-	 *
 	 * @param {Object} passage Passage to display
 	 * @returns {Promise} resolves when renderer has displayed passage
 	 */
 	displayPassage(passage) {
-		if (this.busy) {
-			throw new Error(
-				"Busy waiting for previous passage to display; cannot display another"
-			);
-		}
 		this.logger.log("Displaying passage:", passage);
 		// push current state to history
 		if (this.currentPassage) {
@@ -147,10 +138,7 @@ export default class {
 			);
 		}
 		this.currentPassage = passage;
-		this.busy = true;
-		return this.renderer.displayPassage(passage).then(() => {
-			this.busy = false;
-		});
+		return this.renderer.displayPassage(passage);
 	}
 
 	/**
