@@ -21,7 +21,7 @@ declare module 'strand-core' {
 		program: unknown;
 	}
 	abstract class Renderer<T = void> {
-		displayPassage(passage: Passage): Promise<T>;
+		displayPassage(passage: Passage): T;
 	}
 	export default class Strand<T = void> {
 		history: string[];
@@ -33,9 +33,9 @@ declare module 'strand-core' {
 		eval(source: string): unknown;
 		setSource(source: string): void;
 		getPassageWithTitle(title: string): Passage;
-		goto(passage: string): Promise<T>;
-		back(): Promise<T>;
-		displayPassage(passage: Passage): Promise<T>;
+		goto(passage: string): T;
+		back(): T;
+		displayPassage(passage: Passage): T;
 		execute(program: unknown): ProgramNode[];
 	}
 }
