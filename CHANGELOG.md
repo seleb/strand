@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/seleb/strand/compare/v3.0.0...v3.0.1) (2024-07-06)
+
+
+### Bug Fixes
+
+* renderer doesn't have to return promises ([762715c](https://github.com/seleb/strand/commit/762715cec930d8b9476d079a2079799fb162552b))
+
 # [3.0.0](https://github.com/seleb/strand/compare/v2.0.1...v3.0.0) (2024-07-06)
 
 
