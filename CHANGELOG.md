@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/seleb/strand/compare/v2.0.1...v3.0.0) (2024-07-06)
+
+
+### Features
+
+* remove `busy` flag + checks ([7d63e21](https://github.com/seleb/strand/commit/7d63e2183b7210aa2d4105928672689c5c4e866f))
+
+
+### BREAKING CHANGES
+
+* The interpreter no longer tracks a `busy` state. It is up to the renderer whether it is interruptible or not, which made this unnecessarily prescriptive.
+
 ## [2.0.1](https://github.com/seleb/strand/compare/v2.0.0...v2.0.1) (2023-01-03)
 
 

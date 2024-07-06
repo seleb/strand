@@ -430,7 +430,6 @@ var _default = /*#__PURE__*/function () {
     this._evalInScope = function (script) {
       return eval(script);
     }.bind(this);
-    this.busy = false;
     this.renderer = renderer;
     this.logger = logger;
     this.setSource(source);
@@ -538,19 +537,12 @@ var _default = /*#__PURE__*/function () {
      * The renderer can execute the program by calling `runner.execute(passage.program)`,
      * which will evaluate it and return the resulting list of nodes.
      *
-     * Runner will be flagged as `busy` until renderer has finished.
-     * Calling `displayPassage` while busy will throw an error.
-     *
      * @param {Object} passage Passage to display
      * @returns {Promise} resolves when renderer has displayed passage
      */
   }, {
     key: "displayPassage",
     value: function displayPassage(passage) {
-      var _this3 = this;
-      if (this.busy) {
-        throw new Error("Busy waiting for previous passage to display; cannot display another");
-      }
       this.logger.log("Displaying passage:", passage);
       // push current state to history
       if (this.currentPassage) {
@@ -559,10 +551,7 @@ var _default = /*#__PURE__*/function () {
         this.logger.warn("No history pushed because there is no current passage");
       }
       this.currentPassage = passage;
-      this.busy = true;
-      return this.renderer.displayPassage(passage).then(function () {
-        _this3.busy = false;
-      });
+      return this.renderer.displayPassage(passage);
     }
 
     /**
@@ -574,7 +563,7 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "execute",
     value: function execute(program) {
-      var _this4 = this;
+      var _this3 = this;
       return program.reduce(function (nodes, node) {
         switch (node.name) {
           case "condition":
@@ -585,9 +574,9 @@ var _default = /*#__PURE__*/function () {
                 var branch = _step.value;
                 var result = void 0;
                 try {
-                  result = _this4.eval(branch.condition);
+                  result = _this3.eval(branch.condition);
                 } catch (err) {
-                  _this4.logger.error("Failed to evaluate condition", branch, err);
+                  _this3.logger.error("Failed to evaluate condition", branch, err);
                   nodes.push({
                     name: "text",
                     value: "Failed to evaluate condition:\n".concat(branch.condition, "\n").concat(err.message)
@@ -595,7 +584,7 @@ var _default = /*#__PURE__*/function () {
                   continue;
                 }
                 if (result) {
-                  nodes = nodes.concat(_this4.execute(branch.branch));
+                  nodes = nodes.concat(_this3.execute(branch.branch));
                   break;
                 }
               }
@@ -607,9 +596,9 @@ var _default = /*#__PURE__*/function () {
             break;
           case "do":
             try {
-              _this4.eval(node.value);
+              _this3.eval(node.value);
             } catch (err) {
-              _this4.logger.error("Failed to evaluate node", node, err);
+              _this3.logger.error("Failed to evaluate node", node, err);
               nodes.push({
                 name: "text",
                 value: "Failed to evaluate node:\n".concat(node.value, "\n").concat(err.message)
@@ -619,7 +608,7 @@ var _default = /*#__PURE__*/function () {
           case "print":
             nodes.push({
               name: "text",
-              value: _this4.eval(node.value)
+              value: _this3.eval(node.value)
             });
             break;
           default:
