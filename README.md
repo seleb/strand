@@ -28,10 +28,6 @@ note: anywhere `JS` appears here, it is embedded javascript to be evaluated in t
 - `<<set var=val>>`: Shorthand for `<<do this.var=val>>`
 - `<<else>>`: Shorthand for `<<elseif true>>`
 
-[VSCode extension](https://marketplace.visualstudio.com/items?itemName=seansleblanc.strand-vscode)
-
-[Example renderer](https://github.com/seleb/strand-htmlrenderer)
-
 ### example
 
 ```
@@ -49,3 +45,13 @@ this text shows up if you visited the shorthand link passage before getting here
 this text shows up if you didn't
 <<endif>>
 ```
+
+### IDE support
+- [VSCode extension](https://marketplace.visualstudio.com/items?itemName=seansleblanc.strand-vscode)
+- [Notepad++ UDL](https://github.com/seleb/strand-npp)
+
+## renderer examples
+
+- [Sample HTML renderer](https://github.com/seleb/strand-htmlrenderer)
+- [Full game with preact-redux renderer](https://github.com/seleb/Gothic-Novel-Jam-2018)
+- [Full game with PixiJS renderer](https://github.com/SweetheartSquad/GameOff2021)
